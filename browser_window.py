@@ -11,14 +11,6 @@ class BrowserWindow:
         self.url = url
         self.set_url(url)
 
-        #TODO Remove TestCase
-        self.set_transparent()
-        self.browser.page().setBackgroundColor(QtGui.QColorConstants.Transparent)
-        self.set_frame_enabled(False)
-        self.set_mouse_transparent()
-        self.set_always_on_top()
-        self.move(y=0)
-
     def set_transparent(self, enabled=True):
         self.browser.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground, on=enabled)
         self.browser.page().setBackgroundColor(QtGui.QColorConstants.Transparent)
