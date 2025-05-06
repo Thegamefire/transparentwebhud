@@ -1,7 +1,7 @@
 from PySide6 import QtCore, QtWidgets, QtWebEngineWidgets, QtGui
 
 
-class BrowserWindow():
+class BrowserWindow:
     def __init__(self):
         super().__init__()
 
