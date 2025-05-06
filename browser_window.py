@@ -7,10 +7,31 @@ class BrowserWindow():
 
         self.browser = QtWebEngineWidgets.QWebEngineView()
         self.browser.load("https://reactive.fugi.tech/group")
-        self.browser.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.browser.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents)
-        self.browser.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint)
-        self.browser.setWindowFlag(QtCore.Qt.WindowType.WindowStaysOnTopHint)
+        self.set_transparent()
         self.browser.page().setBackgroundColor(QtGui.QColorConstants.Transparent)
-        self.browser.show()
+        self.set_frame_enabled()
+        self.set_mouse_transparent()
+        self.set_always_on_top()
+        self.move(y=0)
 
+    def set_transparent(self, enabled=True):
+        self.browser.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground, on=enabled)
+        self.browser.page().setBackgroundColor(QtGui.QColorConstants.Transparent)
+
+    def set_frame_enabled(self, enabled=True):
+        self.browser.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, on=not enabled)
+
+    def set_mouse_transparent(self, enabled=True):
+        self.browser.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents, on=enabled)
+
+    def set_always_on_top(self, enabled=True):
+        self.browser.setWindowFlag(QtCore.Qt.WindowType.WindowStaysOnTopHint, on=enabled)
+
+    def move(self, x=None, y=None):
+        x = x if x else self.browser.x()
+        y = y if y else self.browser.y()
+
+        self.browser.move(QtCore.QPoint(x, y))
+
+    def show(self):
+        self.browser.show()
