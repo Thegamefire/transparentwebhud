@@ -2,14 +2,19 @@ from PySide6 import QtCore, QtWidgets, QtWebEngineWidgets, QtGui
 
 
 class BrowserWindow:
-    def __init__(self):
+    def __init__(self, title, url):
         super().__init__()
 
         self.browser = QtWebEngineWidgets.QWebEngineView()
-        self.browser.load("https://reactive.fugi.tech/group")
+        self.title = title
+        self.set_title(title)
+        self.url = url
+        self.set_url(url)
+
+        #TODO Remove TestCase
         self.set_transparent()
         self.browser.page().setBackgroundColor(QtGui.QColorConstants.Transparent)
-        self.set_frame_enabled()
+        self.set_frame_enabled(False)
         self.set_mouse_transparent()
         self.set_always_on_top()
         self.move(y=0)
@@ -32,6 +37,14 @@ class BrowserWindow:
         y = y if y else self.browser.y()
 
         self.browser.move(QtCore.QPoint(x, y))
+
+    def set_title(self, title):
+        self.title = title
+        self.browser.setWindowTitle(self.title)
+
+    def set_url(self, url):
+        self.url = url
+        self.browser.load(self.url)
 
     def show(self):
         self.browser.show()

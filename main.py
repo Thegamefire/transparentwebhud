@@ -10,7 +10,7 @@ if __name__ == "__main__":
     # widget.resize(800, 600)
     # widget.show()
 
-    browser = browser_window.BrowserWindow()
+    browser = browser_window.BrowserWindow("Fugi Group", "https://reactive.fugi.tech/group")
     browser.show()
 
     sys.exit(app.exec())
