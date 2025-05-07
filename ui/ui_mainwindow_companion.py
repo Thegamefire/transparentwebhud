@@ -1,11 +1,14 @@
 from PySide6 import QtWidgets
 from ui.ui_mainwindow import Ui_MainWindow
 
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.set_screen_limits()
 
         # Adding Listeners
         self.ui.urlInput.textChanged.connect(self.name_update)
@@ -67,3 +70,15 @@ class MainWindow(QtWidgets.QMainWindow):
         click_through = self.ui.clickThroughCheckBox.isChecked()
 
         print(f'changed window properties: frameless={frameless} alwaysOnTop={always_on_top} transparent={transparent} clickThrough={click_through}')# TODO add Functionality
+
+    def set_screen_limits(self):
+        desktop = self.screen().virtualGeometry()
+        self.ui.xInput.setMaximum(desktop.right())
+        self.ui.xInput.setMinimum(desktop.left())
+        self.ui.yInput.setMaximum(desktop.bottom())
+        self.ui.yInput.setMinimum(desktop.top())
+
+        self.ui.widthInput.setMaximum(desktop.width())
+        self.ui.heightInput.setMaximum(desktop.height())
+
+        print("set sizes to "+str((desktop.left(), desktop.right(), desktop.top(), desktop.bottom())))
