@@ -42,7 +42,7 @@
      <string>Name</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="nameInput">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -75,7 +75,7 @@
      <string>URL</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="urlInput">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -162,17 +162,7 @@
      <string>Crop Bottom</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>210</y>
-      <width>111</width>
-      <height>24</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="spinBox_2">
+   <widget class="QSpinBox" name="cropBottomInput">
     <property name="geometry">
      <rect>
       <x>520</x>
@@ -182,32 +172,32 @@
      </rect>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_3">
+   <widget class="QSpinBox" name="xInput">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>330</x>
       <y>130</y>
-      <width>161</width>
+      <width>81</width>
       <height>24</height>
      </rect>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_4">
+   <widget class="QSpinBox" name="yInput">
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>520</x>
       <y>130</y>
-      <width>161</width>
+      <width>81</width>
       <height>24</height>
      </rect>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_5">
+   <widget class="QSpinBox" name="cropRightInput">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>520</x>
       <y>240</y>
-      <width>101</width>
+      <width>81</width>
       <height>24</height>
      </rect>
     </property>
@@ -230,16 +220,6 @@
      <string>Crop Left</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_6">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>240</y>
-      <width>111</width>
-      <height>24</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
@@ -258,12 +238,12 @@
      <string>Crop Right</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_7">
+   <widget class="QSpinBox" name="heightInput">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>520</x>
       <y>170</y>
-      <width>131</width>
+      <width>81</width>
       <height>24</height>
      </rect>
     </property>
@@ -286,12 +266,12 @@
      <string>Width</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_8">
+   <widget class="QSpinBox" name="widthInput">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>330</x>
       <y>170</y>
-      <width>131</width>
+      <width>81</width>
       <height>24</height>
      </rect>
     </property>
@@ -314,7 +294,7 @@
      <string>Height</string>
     </property>
    </widget>
-   <widget class="QSlider" name="horizontalSlider">
+   <widget class="QSlider" name="opacitySlider">
     <property name="geometry">
      <rect>
       <x>299</x>
@@ -328,11 +308,17 @@
       <pointsize>11</pointsize>
      </font>
     </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
     <property name="value">
-     <number>99</number>
+     <number>100</number>
     </property>
     <property name="orientation">
      <enum>Qt::Orientation::Horizontal</enum>
+    </property>
+    <property name="tickPosition">
+     <enum>QSlider::TickPosition::NoTicks</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
@@ -353,7 +339,7 @@
      <string>Opacity</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QCheckBox" name="frameCheckBox">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -371,7 +357,7 @@
      <string>Frame</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_2">
+   <widget class="QCheckBox" name="transparentCheckBox">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -389,7 +375,7 @@
      <string>Transparent</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_3">
+   <widget class="QCheckBox" name="alwaysOnTopCheckBox">
     <property name="geometry">
      <rect>
       <x>420</x>
@@ -407,7 +393,7 @@
      <string>Always On Top</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_4">
+   <widget class="QCheckBox" name="clickThroughCheckBox">
     <property name="geometry">
      <rect>
       <x>420</x>
@@ -425,7 +411,7 @@
      <string>Click Through</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="deleteBtn">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -451,7 +437,7 @@
      <string>Save</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_5">
+   <widget class="QCheckBox" name="enabledCheckBox">
     <property name="geometry">
      <rect>
       <x>390</x>
@@ -467,6 +453,26 @@
     </property>
     <property name="text">
      <string>Enabled</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="cropLeftInput">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>240</y>
+      <width>81</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="cropTopInput">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>210</y>
+      <width>81</width>
+      <height>24</height>
+     </rect>
     </property>
    </widget>
   </widget>
