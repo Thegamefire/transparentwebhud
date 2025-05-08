@@ -27,9 +27,6 @@ class Config:
 
         window_dict: dict[str, Any]
         for window_dict in self.config:
-            if not window_dict.get('enabled', ConfigDefaults.ENABLED):
-                continue
-
             window = BrowserWindow(
                 window_dict.get('title', ConfigDefaults.TITLE),
                 window_dict.get('url', ConfigDefaults.URL),
@@ -41,5 +38,6 @@ class Config:
             window.set_always_on_top(window_dict.get('alwaysOnTop', ConfigDefaults.ALWAYS_ON_TOP))
             pos = window_dict.get('pos', ConfigDefaults.POS)
             window.move(pos[0], pos[1])
+            window.enabled = window_dict.get('enabled', ConfigDefaults.ENABLED)
 
             self.windows.append(window)

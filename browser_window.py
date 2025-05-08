@@ -10,6 +10,7 @@ class BrowserWindow:
         self.set_title(title)
         self.url = url
         self.set_url(url)
+        self.__enabled = True
 
     def set_transparent(self, enabled=True):
         self.browser.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground, on=enabled)
@@ -38,5 +39,23 @@ class BrowserWindow:
         self.url = url
         self.browser.load(self.url)
 
+    @property
+    def enabled(self):
+        return self.__enabled
+
+    @enabled.setter
+    def enabled(self, value):
+        self.__enabled = value
+
+    def show_hide(self):
+        """shows window if enabled is true, else hide"""
+        if self.enabled:
+            self.show()
+        else:
+            self.hide()
+
     def show(self):
         self.browser.show()
+
+    def hide(self):
+        self.browser.hide()

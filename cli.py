@@ -10,6 +10,6 @@ def run(config_file) -> None:
 
     config = settings.Config(config_file)
     for window in config.windows:
-        window.show()
+        window.show_hide()
 
     sys.exit(app.exec())
