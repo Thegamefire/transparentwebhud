@@ -13,13 +13,17 @@
     "title": "twh fugi lolcat",
     "url": "https://reactive.fugi.tech/individual/498521686182854657",
     "mouseTransparent": false,
-    "transparent": false
+    "transparent": false,
+    "enabled": false
   },
   {
     "title": "twh thegamefire",
     "url": "https://thegamefire.com",
     "frameless": true,
+    "position": [
+      1000,
+      0
+    ],
     "enabled": true
-  },
-  {}
+  }
 ]

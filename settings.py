@@ -11,7 +11,7 @@ class ConfigDefaults:
     TRANSPARENT = True
     CLICK_THROUGH = True
     ALWAYS_ON_TOP = True
-    POS = [0, 0]
+    POSITION = [0, 0]
     WIDTH = 0
     HEIGHT = 0
     CROP = [0, 0, 0, 0]
@@ -36,7 +36,7 @@ class Config:
             window.set_frame_enabled(not window_dict.get('frameless', ConfigDefaults.FRAMELESS))
             window.set_mouse_transparent(window_dict.get('mouseTransparent', ConfigDefaults.TRANSPARENT))
             window.set_always_on_top(window_dict.get('alwaysOnTop', ConfigDefaults.ALWAYS_ON_TOP))
-            pos = window_dict.get('pos', ConfigDefaults.POS)
+            pos = window_dict.get('position', ConfigDefaults.POSITION)
             window.move(pos[0], pos[1])
             window.enabled = window_dict.get('enabled', ConfigDefaults.ENABLED)
 
