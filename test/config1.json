@@ -19,11 +19,30 @@
   {
     "title": "twh thegamefire",
     "url": "https://thegamefire.com",
-    "frameless": true,
+    "frameless": false,
     "position": [
       1000,
-      0
+      1000
     ],
     "enabled": true
+  },
+  {
+    "title": "twh wikipedia",
+    "url": "https://wikipedia.org",
+    "position": [
+      100,
+      100
+    ],
+    "mouseTransparent": false,
+    "enabled": false
+  },
+  {
+    "title": "twh text page",
+    "url": "https://raw.githubusercontent.com/Thegamefire/transparentwebhud/refs/heads/master/README.md",
+    "position": [
+      100,
+      100
+    ],
+    "mouseTransparent": false
   }
 ]

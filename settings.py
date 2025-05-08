@@ -9,7 +9,7 @@ class ConfigDefaults:
     URL = 'https://thegamefire.com'
     FRAMELESS = True
     TRANSPARENT = True
-    CLICK_THROUGH = True
+    CLICK_THROUGH = False
     ALWAYS_ON_TOP = True
     POSITION = [0, 0]
     WIDTH = 0
@@ -34,7 +34,7 @@ class Config:
 
             window.set_transparent(window_dict.get('transparent', ConfigDefaults.TRANSPARENT))
             window.set_frame_enabled(not window_dict.get('frameless', ConfigDefaults.FRAMELESS))
-            window.set_mouse_transparent(window_dict.get('mouseTransparent', ConfigDefaults.TRANSPARENT))
+            window.set_mouse_transparent(window_dict.get('mouseTransparent', ConfigDefaults.CLICK_THROUGH))
             window.set_always_on_top(window_dict.get('alwaysOnTop', ConfigDefaults.ALWAYS_ON_TOP))
             pos = window_dict.get('position', ConfigDefaults.POSITION)
             window.move(pos[0], pos[1])
