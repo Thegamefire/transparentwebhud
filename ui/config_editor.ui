@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>608</width>
-    <height>600</height>
+    <width>610</width>
+    <height>570</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>610</width>
+    <height>570</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>610</width>
+    <height>570</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -18,7 +30,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>20</y>
       <width>211</width>
       <height>521</height>
      </rect>
@@ -415,7 +427,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>510</y>
+      <y>520</y>
       <width>101</width>
       <height>24</height>
      </rect>
@@ -428,7 +440,7 @@
     <property name="geometry">
      <rect>
       <x>530</x>
-      <y>510</y>
+      <y>520</y>
       <width>75</width>
       <height>24</height>
      </rect>
@@ -441,7 +453,7 @@
     <property name="geometry">
      <rect>
       <x>390</x>
-      <y>510</y>
+      <y>520</y>
       <width>91</width>
       <height>20</height>
      </rect>
@@ -475,16 +487,6 @@
      </rect>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>608</width>
-     <height>33</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
