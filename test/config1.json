@@ -1,5 +1,11 @@
 [
   {
+    "title":"FUGI Group",
+    "url": "https://reactive.fugi.tech/group",
+    "mouseTransparent": true,
+    "enabled": true
+  },
+  {
     "title": "twh fugi zoe talking",
     "url": "https://reactive.cdn.fugi.tech/cd/31/7f219689d84ed62df53043f4e6ad52e6dd8237d39041c320732d285cee4b.webp",
     "enabled": false
@@ -24,7 +30,7 @@
       1000,
       1000
     ],
-    "enabled": true
+    "enabled": false
   },
   {
     "title": "twh wikipedia",
@@ -43,6 +49,7 @@
       100,
       100
     ],
-    "mouseTransparent": false
+    "mouseTransparent": true,
+    "enabled": false
   }
 ]

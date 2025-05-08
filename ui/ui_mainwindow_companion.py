@@ -1,17 +1,24 @@
+from typing import List
+
 from PySide6 import QtWidgets
+
+from browser_window import BrowserWindow
 from ui.ui_mainwindow import Ui_MainWindow
 
 
 class MainWindow(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, pages):
         super(MainWindow, self).__init__()
+        self.pages:List[BrowserWindow] = pages
+        self.selected_page_index=0
+
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
         self.set_screen_limits()
 
         # Adding Listeners
-        self.ui.urlInput.textChanged.connect(self.name_update)
+        self.ui.nameInput.textChanged.connect(self.name_update)
         self.ui.urlInput.textChanged.connect(self.url_update)
 
         self.ui.xInput.valueChanged.connect(self.location_update)
@@ -35,15 +42,18 @@ class MainWindow(QtWidgets.QMainWindow):
     def name_update(self):
         name = self.ui.nameInput.text()
         print(f'name changed to {name}') # TODO add Functionality
+        self.pages[self.selected_page_index].set_title(name)
 
     def url_update(self):
         url = self.ui.urlInput.text()
         print(f'url changed to {url}') # TODO add Functionality
+        self.pages[self.selected_page_index].set_url(url)
 
     def location_update(self):
-        x=self.ui.xInput.value()
+        x = self.ui.xInput.value()
         y = self.ui.yInput.value()
         print(f'move window to {x}, {y}') # TODO add Functionality
+        self.pages[self.selected_page_index].move(x, y)
 
     def size_update(self):
         width = self.ui.widthInput.value()
@@ -64,12 +74,16 @@ class MainWindow(QtWidgets.QMainWindow):
         print(f'change opacity to {opacity}')# TODO add Functionality
 
     def window_properties_update(self):
-        frameless = not self.ui.frameCheckBox.isChecked()
+        frame_enabled = self.ui.frameCheckBox.isChecked()
         always_on_top = self.ui.alwaysOnTopCheckBox.isChecked()
         transparent = self.ui.transparentCheckBox.isChecked()
         click_through = self.ui.clickThroughCheckBox.isChecked()
 
-        print(f'changed window properties: frameless={frameless} alwaysOnTop={always_on_top} transparent={transparent} clickThrough={click_through}')# TODO add Functionality
+        self.pages[self.selected_page_index].set_frame_enabled(frame_enabled)
+        self.pages[self.selected_page_index].set_always_on_top(always_on_top)
+        self.pages[self.selected_page_index].set_transparent(transparent)
+        self.pages[self.selected_page_index].set_mouse_transparent(click_through)
+        print(f'changed window properties: frame_enabled={frame_enabled} alwaysOnTop={always_on_top} transparent={transparent} clickThrough={click_through}')# TODO add Functionality
 
     def set_screen_limits(self):
         desktop = self.screen().virtualGeometry()

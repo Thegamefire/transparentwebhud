@@ -11,8 +11,8 @@ from browser_window import BrowserWindow
 windows: list[BrowserWindow]
 
 
-def run_gui(app: QtWidgets.QApplication):
-    ui.runGui(app)
+def run_gui(app: QtWidgets.QApplication, pages):
+    ui.runGui(app, pages)
 
 
 def run_cli(app: QtWidgets.QApplication):
@@ -30,15 +30,15 @@ def main():
                             default=False)
     args = arg_parser.parse_args()
 
-    if not args.wayland:
-        os.environ['QT_QPA_PLATFORM'] = 'xcb'
+    # if not args.wayland:
+    #     os.environ['QT_QPA_PLATFORM'] = 'xcb'
 
     app = QtWidgets.QApplication()
     config = settings.Config(args.config if args.config else 'test/config1.json')  # todo: make default config
     windows = config.windows
 
     if args.config is None:
-        run_gui(app)
+        run_gui(app, pages=windows)
     else:
         run_cli(app)
 

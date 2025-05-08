@@ -15,15 +15,19 @@ class BrowserWindow:
     def set_transparent(self, enabled=True):
         self.browser.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground, on=enabled)
         self.browser.page().setBackgroundColor(QtGui.QColorConstants.Transparent)
+        self.redraw()
 
     def set_frame_enabled(self, enabled=True):
         self.browser.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, on=not enabled)
+        self.redraw() #TODO: fix old windows frame bug when disabling at runtime
 
     def set_mouse_transparent(self, enabled=True):
         self.browser.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents, on=enabled)
+        self.redraw()
 
     def set_always_on_top(self, enabled=True):
         self.browser.setWindowFlag(QtCore.Qt.WindowType.WindowStaysOnTopHint, on=enabled)
+        self.redraw()
 
     def move(self, x=None, y=None):
         x = x if x else self.browser.x()
@@ -60,3 +64,7 @@ class BrowserWindow:
 
     def hide(self):
         self.browser.hide()
+
+    def redraw(self):
+        self.browser.hide()
+        self.show_hide()
