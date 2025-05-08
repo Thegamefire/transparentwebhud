@@ -1,19 +1,21 @@
 import argparse
 import sys
-from multiprocessing.resource_tracker import cleanup_noop
 
 from PySide6 import QtWidgets
-import browser_window
-import cli
+
+import settings
 import ui
+from browser_window import BrowserWindow
+
+windows: list[BrowserWindow]
 
 
 def run_gui():
     ui.runGui()
 
 
-def run_cli(config_file):
-    cli.run(config_file)
+def run_cli(app: QtWidgets.QApplication):
+    sys.exit(app.exec())
 
 
 def main():
@@ -24,11 +26,14 @@ def main():
 
     args = arg_parser.parse_args()
 
-    # arg_parser.add_argument('--)
+    app = QtWidgets.QApplication()
+    config = settings.Config(args.config)
+    windows = config.windows
+
     if args.config is None:
         run_gui()
     else:
-        run_cli(args.config)
+        run_cli(app)
 
 
 if __name__ == "__main__":

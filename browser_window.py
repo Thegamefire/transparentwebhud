@@ -46,6 +46,7 @@ class BrowserWindow:
     @enabled.setter
     def enabled(self, value):
         self.__enabled = value
+        self.show_hide()
 
     def show_hide(self):
         """shows window if enabled is true, else hide"""
