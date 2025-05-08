@@ -25,7 +25,8 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(610, 570)
-        MainWindow.setMinimumSize(QSize(600, 570))
+        MainWindow.setFixedSize(610, 570)
+        MainWindow.setMinimumSize(QSize(610, 570))
         MainWindow.setMaximumSize(QSize(610, 570))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
