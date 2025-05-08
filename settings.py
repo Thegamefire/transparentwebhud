@@ -6,7 +6,7 @@ from browser_window import BrowserWindow
 
 class ConfigDefaults:
     TITLE = 'transparentwebhud window'
-    URL = 'http://localhost:8080'
+    URL = 'https://thegamefire.com'
     FRAMELESS = True
     TRANSPARENT = True
     CLICK_THROUGH = True
