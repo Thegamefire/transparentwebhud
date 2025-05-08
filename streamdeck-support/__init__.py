@@ -1,5 +1,6 @@
 import websockets, asyncio
 from websockets import ServerConnection
+import json
 
 
 async def open_websocket():
@@ -7,50 +8,41 @@ async def open_websocket():
         async for message in ws:
             await on_message(message)
 
-    async with websockets.serve(open_connection, "localhost", 8765) as ws:
-        await ws.serve_forever()
+    async with websockets.serve(open_connection, "localhost", 8765) as server:
+        await server.serve_forever()
 
 async def on_message(msg):
-    if not msg.startswith("[SD_WEBHUD] "):
+    if not msg.startswith("[SD_WEBHUD]"):
         return
 
-    msg = msg.removeprefix("[SD_WEBHUD] ")
-    args = msg.split(" ")
-    command = args.pop(0)
+    msg = json.loads(msg.removeprefix("[SD_WEBHUD]"))
+    args = msg['args']
 
-    match command:
-        case "toggle_HUD_element":
+    match msg['command']:
+        case "toggle HUD-element":
             if len(args)<1:
                 return
-            print(f"toggling element {args[0]}")
+            if args["state"] is None:
+                args["state"]='toggle'
+            print(f"toggling element {args['name']} to state {args['state']}")
 
-        case "move_to":
+        case "move to":
             if len(args)<3:
                 return
 
-            page_name = args[0]
-            x = args[1]
-            y = args[2]
+            print(f'Moving element {args['name']} to {args['x']},{args['y']}')
 
-            print(f'Moving element {page_name} to {x},{y}')
-
-        case 'move_diff':
+        case 'move':
             if len(args) < 3:
                 return
 
-            page_name = args[0]
-            x_diff = args[1]
-            y_diff = args[2]
+            print(f'Moving element {args['name']} with diffs {args['x_diff']},{args['y_diff']}')
 
-            print(f'Moving element {page_name} with diffs {x_diff},{y_diff}')
-
-        case 'opacity_diff':
+        case 'opacity change':
             if len(args)<2:
                 return
 
-            page_name = args[0]
-            opacity_diff = args[1]
-            print(f'Changing opacity of element {page_name} with diff {opacity_diff}')
+            print(f'Changing opacity of element {args['name']} with diff {args['opacity_diff']}')
 
 
 

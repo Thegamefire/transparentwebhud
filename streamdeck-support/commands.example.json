@@ -1,0 +1,32 @@
+[
+  {
+    "command": "opacity change",
+    "args": {
+      "name": "Fugi",
+      "opacity_diff": -0.05
+    }
+  },
+  {
+    "command": "move",
+    "args": {
+      "name": "Fugi",
+      "x": 1200,
+      "y": 800
+    }
+  },
+  {
+    "command": "move to",
+    "args": {
+      "name": "Fugi",
+      "x_diff": 0,
+      "y_diff": 10
+    }
+  },
+  {
+    "command": "toggle HUD-element",
+    "args": {
+      "name": "Fugi",
+      "state": null
+    }
+  }
+]
