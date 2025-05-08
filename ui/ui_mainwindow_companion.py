@@ -9,13 +9,15 @@ from ui.ui_mainwindow import Ui_MainWindow
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, pages):
         super(MainWindow, self).__init__()
-        self.pages:List[BrowserWindow] = pages
-        self.selected_page_index=0
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
         self.set_screen_limits()
+
+        self.pages:List[BrowserWindow] = pages
+        self.select_page(0)
+
 
         # Adding Listeners
         self.ui.nameInput.textChanged.connect(self.name_update)
@@ -42,18 +44,18 @@ class MainWindow(QtWidgets.QMainWindow):
     def name_update(self):
         name = self.ui.nameInput.text()
         print(f'name changed to {name}') # TODO add Functionality
-        self.pages[self.selected_page_index].set_title(name)
+        self.selected_page.set_title(name)
 
     def url_update(self):
         url = self.ui.urlInput.text()
         print(f'url changed to {url}') # TODO add Functionality
-        self.pages[self.selected_page_index].set_url(url)
+        self.selected_page.set_url(url)
 
     def location_update(self):
         x = self.ui.xInput.value()
         y = self.ui.yInput.value()
         print(f'move window to {x}, {y}') # TODO add Functionality
-        self.pages[self.selected_page_index].move(x, y)
+        self.selected_page.move(x, y)
 
     def size_update(self):
         width = self.ui.widthInput.value()
@@ -79,11 +81,12 @@ class MainWindow(QtWidgets.QMainWindow):
         transparent = self.ui.transparentCheckBox.isChecked()
         click_through = self.ui.clickThroughCheckBox.isChecked()
 
-        self.pages[self.selected_page_index].set_frame_enabled(frame_enabled)
-        self.pages[self.selected_page_index].set_always_on_top(always_on_top)
-        self.pages[self.selected_page_index].set_transparent(transparent)
-        self.pages[self.selected_page_index].set_mouse_transparent(click_through)
+        self.selected_page.set_frame_enabled(frame_enabled)
+        self.selected_page.set_always_on_top(always_on_top)
+        self.selected_page.set_transparent(transparent)
+        self.selected_page.set_mouse_transparent(click_through)
         print(f'changed window properties: frame_enabled={frame_enabled} alwaysOnTop={always_on_top} transparent={transparent} clickThrough={click_through}')# TODO add Functionality
+        print(f'on page {self.selected_page}')
 
     def set_screen_limits(self):
         desktop = self.screen().virtualGeometry()
@@ -96,3 +99,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.heightInput.setMaximum(desktop.height())
 
         print("set sizes to "+str((desktop.left(), desktop.right(), desktop.top(), desktop.bottom())))
+
+    def select_page(self, index):
+        self.selected_page = self.pages[index]
+        self.ui.nameInput.setText(self.selected_page.title)
+        self.ui.urlInput.setText(self.selected_page.url)
+
+        self.ui.frameCheckBox.setChecked(not self.selected_page.frameless)
+        self.ui.alwaysOnTopCheckBox.setChecked(self.selected_page.always_on_top)
+        self.ui.transparentCheckBox.setChecked(self.selected_page.transparent)
+        self.ui.clickThroughCheckBox.setChecked(self.selected_page.mouse_transparent)
+
+        self.ui.xInput.setValue(self.selected_page.location[0])
+        self.ui.yInput.setValue(self.selected_page.location[1])
