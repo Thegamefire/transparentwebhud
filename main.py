@@ -1,7 +1,7 @@
-import sys, random
-from PySide6 import QtCore, QtWidgets
+import sys
+from PySide6 import QtWidgets
 import browser_window
-
+import ui
 
 def main(title, url):
     app = QtWidgets.QApplication([])
@@ -20,6 +20,12 @@ def main(title, url):
     sys.exit(app.exec())
 
 
+
+
 if __name__ == "__main__":
     # todo: application should not be started from here
-    main(sys.argv[1], sys.argv[2])
+    #main(sys.argv[1], sys.argv[2])
+
+    ui.runGui()
+
+
