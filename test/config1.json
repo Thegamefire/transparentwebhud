@@ -1,0 +1,24 @@
+[
+  {
+    "title": "twh fugi zoe talking",
+    "url": "https://reactive.cdn.fugi.tech/cd/31/7f219689d84ed62df53043f4e6ad52e6dd8237d39041c320732d285cee4b.webp",
+    "enabled": false
+  },
+  {
+    "title": "thw fugi zoe muted",
+    "url": "https://reactive.cdn.fugi.tech/08/ba/ced2f975eaba0c8e302ff74308d2f53ecdcd3b4a7af29c4395542c1922e1.webp",
+    "enabled": false
+  },
+  {
+    "title": "twh fugi lolcat",
+    "url": "https://reactive.fugi.tech/individual/498521686182854657",
+    "mouseTransparent": false,
+    "transparent": false
+  },
+  {
+    "title": "twh thegamefire",
+    "url": "https://thegamefire.com",
+    "frameless": true,
+    "enabled": true
+  }
+]
