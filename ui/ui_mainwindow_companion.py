@@ -51,12 +51,12 @@ class MainWindow(QtWidgets.QMainWindow):
         print(f'Change window size to {width}x{height}') # TODO add Functionality
 
     def crop_update(self):
-        cropTop = self.ui.cropTopInput.value()
-        cropBottom = self.ui.cropBottomInput.value()
-        cropLeft = self.ui.cropLeftInput.value()
-        cropRight = self.ui.cropRightInput.value()
+        crop_top = self.ui.cropTopInput.value()
+        crop_bottom = self.ui.cropBottomInput.value()
+        crop_left = self.ui.cropLeftInput.value()
+        crop_right = self.ui.cropRightInput.value()
 
-        print(f'crop top: {cropTop} bottom: {cropBottom} left: {cropLeft} right: {cropRight}') # TODO add Functionality
+        print(f'crop top: {crop_top} bottom: {crop_bottom} left: {crop_left} right: {crop_right}') # TODO add Functionality
 
     def opacity_update(self):
         opacity = self.ui.opacitySlider.value() /100
