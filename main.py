@@ -30,8 +30,6 @@ def main():
                             default=False)
     args = arg_parser.parse_args()
 
-    args = arg_parser.parse_args()
-
     if not args.wayland:
         os.environ['QT_QPA_PLATFORM'] = 'xcb'
 
