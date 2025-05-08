@@ -28,5 +28,9 @@
       "name": "Fugi",
       "state": null
     }
+  },
+  {
+    "command": "get page names",
+    "args": {}
   }
 ]

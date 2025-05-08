@@ -6,12 +6,12 @@ import json
 async def open_websocket():
     async def open_connection(ws:ServerConnection):
         async for message in ws:
-            await on_message(message)
+            await on_message(message, ws)
 
     async with websockets.serve(open_connection, "localhost", 8765) as server:
         await server.serve_forever()
 
-async def on_message(msg):
+async def on_message(msg, connection):
     if not msg.startswith("[SD_WEBHUD]"):
         return
 
@@ -19,6 +19,16 @@ async def on_message(msg):
     args = msg['args']
 
     match msg['command']:
+        case "get page names":
+            page_names = ["TestPage"] #TODO implement functionality
+
+            response = "[SD_WEBHUD]"+json.dumps({
+                "type":"page names",
+                "data":page_names
+            })
+            await connection.send(response)
+            print(f"return page names")
+
         case "toggle HUD-element":
             if len(args)<1:
                 return
