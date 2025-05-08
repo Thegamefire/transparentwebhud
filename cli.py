@@ -5,10 +5,10 @@ from PySide6 import QtWidgets
 import settings
 
 
-def run(args: list[str]) -> None:
+def run(config_file) -> None:
     app = QtWidgets.QApplication([])
 
-    config = settings.Config(args[1])
+    config = settings.Config(config_file)
     print(config)  # todo -d
     for window in config.windows:
         window.show()
