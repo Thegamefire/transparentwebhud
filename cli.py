@@ -9,7 +9,6 @@ def run(config_file) -> None:
     app = QtWidgets.QApplication([])
 
     config = settings.Config(config_file)
-    print(config)  # todo -d
     for window in config.windows:
         window.show()
 
