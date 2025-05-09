@@ -37,7 +37,7 @@ class Config:
             window.set_mouse_transparent(window_dict.get('mouseTransparent', ConfigDefaults.CLICK_THROUGH))
             window.set_always_on_top(window_dict.get('alwaysOnTop', ConfigDefaults.ALWAYS_ON_TOP))
             pos = window_dict.get('position', ConfigDefaults.POSITION)
-            window.move(pos[0], pos[1])
+            window.move_tuple(pos[0], pos[1])
             window.enabled = window_dict.get('enabled', ConfigDefaults.ENABLED)
 
             self.windows.append(window)

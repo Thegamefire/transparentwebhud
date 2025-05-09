@@ -1,3 +1,4 @@
+import asyncio
 from typing import List
 
 from PySide6 import QtWidgets
@@ -10,6 +11,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, pages):
         super(MainWindow, self).__init__()
 
+        self.selected_page:BrowserWindow = None
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -55,11 +57,13 @@ class MainWindow(QtWidgets.QMainWindow):
         x = self.ui.xInput.value()
         y = self.ui.yInput.value()
         print(f'move window to {x}, {y}') # TODO add Functionality
-        self.selected_page.move(x, y)
+        self.selected_page.move_tuple(x, y)
 
     def size_update(self):
         width = self.ui.widthInput.value()
         height = self.ui.heightInput.value()
+
+        self.selected_page.set_size(width, height)
         print(f'Change window size to {width}x{height}') # TODO add Functionality
 
     def crop_update(self):
@@ -74,6 +78,7 @@ class MainWindow(QtWidgets.QMainWindow):
         opacity = self.ui.opacitySlider.value() /100
 
         print(f'change opacity to {opacity}')# TODO add Functionality
+        self.selected_page.set_opacity(opacity)
 
     def window_properties_update(self):
         frame_enabled = self.ui.frameCheckBox.isChecked()
@@ -100,8 +105,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         print("set sizes to "+str((desktop.left(), desktop.right(), desktop.top(), desktop.bottom())))
 
-    def select_page(self, index):
-        self.selected_page = self.pages[index]
+    def update_values(self):
         self.ui.nameInput.setText(self.selected_page.title)
         self.ui.urlInput.setText(self.selected_page.url)
 
@@ -112,3 +116,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.ui.xInput.setValue(self.selected_page.location[0])
         self.ui.yInput.setValue(self.selected_page.location[1])
+        self.ui.widthInput.setValue(self.selected_page.get_size()[0])
+        self.ui.heightInput.setValue(self.selected_page.get_size()[1])
+
+
+    def select_page(self, index):
+        if self.selected_page is not None:
+            self.selected_page.remove_listeners()
+
+        self.selected_page = self.pages[index]
+        self.update_values()
+        self.selected_page.add_move_resize_listener(self.update_values)
+
