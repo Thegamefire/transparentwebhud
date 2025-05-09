@@ -72,6 +72,14 @@ class MainWindow(QtWidgets.QMainWindow):
         crop_left = self.ui.cropLeftInput.value()
         crop_right = self.ui.cropRightInput.value()
 
+        self.selected_page.crop_page(crop_top, crop_bottom, crop_left, crop_right)
+
+
+        self.ui.frameCheckBox.setDisabled(False)
+        if (crop_top, crop_bottom, crop_left, crop_right) != (0,0,0,0):
+            self.ui.frameCheckBox.setChecked(False)
+            self.ui.frameCheckBox.setDisabled(True)
+
         print(f'crop top: {crop_top} bottom: {crop_bottom} left: {crop_left} right: {crop_right}') # TODO add Functionality
 
     def opacity_update(self):
@@ -126,5 +134,5 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.selected_page = self.pages[index]
         self.update_values()
-        self.selected_page.add_move_resize_listener(self.update_values)
+        self.selected_page.add_change_listener(self.update_values)
 

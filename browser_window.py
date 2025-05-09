@@ -1,4 +1,4 @@
-from PyQt6.QtCore import QSize, QEvent
+from PyQt6.QtGui import QRegion
 from PySide6 import QtCore, QtWidgets, QtWebEngineWidgets, QtGui
 
 
@@ -22,6 +22,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         self.mouse_transparent = False
         self.location = (0,0)
         self.opacity = 1
+        self.crop = (0,0,0,0)
 
     def __str__(self):
         return f'(BrowserPage name="{self.title}" url="{self.url}")'
@@ -68,9 +69,22 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         size.setWidth(width)
         size.setHeight(height)
         self.resize(size)
+        self.crop_page(*self.crop)
 
-    def add_move_resize_listener(self, func):
+    def add_change_listener(self, func):
         self.listeners.append(func)
+
+    def crop_page(self, top=0, bottom=0, left=0, right=0):
+        self.crop = (top, bottom, left, right)
+        if (top, bottom, left, right) == (0,0,0,0):
+            self.setMask(QtGui.QRegion())
+            self.show()
+            return
+        width, height = self.get_size()
+        clip = QtGui.QRegion(left, top, width-right-left, height-bottom-top)
+        self.setMask(clip)
+        self.set_frame_enabled(not self.frameless)
+        self.show()
 
 
     # def resizeEvent(self, event, /):
@@ -83,14 +97,14 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
     #     self.resize_timer.start()
     #     return event
 
-    def on_move_resize(self):
+    def __on_change(self):
         for listener in self.listeners:
             listener()
 
     def remove_listeners(self):
         self.listeners.clear()
 
-    def get_size(self):
+    def get_size(self) -> tuple:
         return self.size().toTuple()
 
     def set_title(self, title):
