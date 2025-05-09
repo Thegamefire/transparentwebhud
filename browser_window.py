@@ -9,7 +9,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         self.listeners = []
         self.resize_timer = QtCore.QTimer()
         #self.resize_timer.setSingleShot(True)
-        self.resize_timer.timeout.connect(self.on_move_resize)
+        self.resize_timer.timeout.connect(self.__on_change)
 
         self.title = title
         self.set_title(title)
