@@ -24,14 +24,14 @@ def main():
         description='transparentwebhud: place transparent browser windows on your screen')
 
     arg_parser.add_argument('-c', '--config', type=str, help='Config file to use', default=None)
-    arg_parser.add_argument('--wayland',
+    arg_parser.add_argument('--x11',
                             action='store_true',
-                            help='Allow application to run with wayland on Linux. This setting has no effect on other operating systems.',
+                            help='Force application to use x11 (or xwayland) on Linux. This setting may prevent the application from starting on other operating systems.',
                             default=False)
     args = arg_parser.parse_args()
 
-    # if not args.wayland:
-    #     os.environ['QT_QPA_PLATFORM'] = 'xcb'
+    if args.x11:
+        os.environ['QT_QPA_PLATFORM'] = 'xcb'
 
     app = QtWidgets.QApplication()
     config = settings.Config(args.config if args.config else 'test/config1.json')  # todo: make default config
