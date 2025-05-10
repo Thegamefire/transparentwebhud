@@ -1,10 +1,12 @@
 import argparse
 import os
+import signal
 import sys
 
 import colorama
 from PySide6 import QtWidgets
 from PySide6.QtGui import QGuiApplication
+from PySide6.QtCore import QTimer
 from colorama import Fore, Style
 
 import settings
@@ -20,6 +22,10 @@ def run_gui(app: QtWidgets.QApplication, pages):
 
 def run_cli(app: QtWidgets.QApplication):
     sys.exit(app.exec())
+
+
+def sigint_handler(*args):
+    QtWidgets.QApplication.quit()
 
 
 def main():
@@ -38,7 +44,12 @@ def main():
     if args.x11:
         os.environ['QT_QPA_PLATFORM'] = 'xcb'
 
+    # allow quitting with ctrl+c -- https://stackoverflow.com/a/4939113/28828756
+    signal.signal(signal.SIGINT, sigint_handler)
     app = QtWidgets.QApplication()
+    sigint_timer = QTimer()
+    sigint_timer.start(500)
+    sigint_timer.timeout.connect(lambda: None)
 
     if QGuiApplication.platformName() == 'wayland':
         print(f'{Style.DIM}[transparentwebhud] {Style.RESET_ALL}{Fore.YELLOW}WARNING: {Fore.RESET}You are using wayland, '
@@ -49,6 +60,7 @@ def main():
 
     config = settings.Config(args.config if args.config else settings.get_default_config())
     windows = config.windows
+
 
     if args.config is None:
         run_gui(app, pages=windows)
