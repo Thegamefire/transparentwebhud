@@ -1,5 +1,8 @@
 import json
+import os
 from typing import Any
+
+import platformdirs
 
 from browser_window import BrowserWindow
 
@@ -41,3 +44,33 @@ class Config:
             window.enabled = window_dict.get('enabled', ConfigDefaults.ENABLED)
 
             self.windows.append(window)
+
+
+def get_config_dir() -> str:
+    """returns the config directory, and makes it if it doesn't exist"""
+    path = platformdirs.user_config_dir('transparentwebhud', 'Thegamefire')
+    if not os.path.isdir(path):
+        print('wiwiwi')
+        os.makedirs(path)
+
+    return path
+
+
+
+def _generate_default_config(path: str) -> None:
+    with open(path, 'x') as f:
+        json.dump([{
+            'title': 'transparentwebhud window',
+            'url': 'https://example.com',
+        }], f)
+
+
+def get_default_config() -> str:
+    """returns the path of the default config, and generates it if it doesn't exist"""
+    path = os.path.join(get_config_dir(), 'windows.json')
+    if not os.path.isfile(path):
+        _generate_default_config(path)
+
+    return path
+
+

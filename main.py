@@ -1,11 +1,11 @@
 import argparse
-import sys
 import os
-import colorama
-from colorama import Fore, Back, Style
+import sys
 
-from PySide6.QtGui import QGuiApplication
+import colorama
 from PySide6 import QtWidgets
+from PySide6.QtGui import QGuiApplication
+from colorama import Fore, Style
 
 import settings
 import ui
@@ -47,7 +47,7 @@ def main():
               f'you can start the application with the --x11 flag, but this may prevent it from starting.',
               file=sys.stderr)
 
-    config = settings.Config(args.config if args.config else 'test/config1.json')  # todo: make default config
+    config = settings.Config(args.config if args.config else settings.get_default_config())
     windows = config.windows
 
     if args.config is None:
