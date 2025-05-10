@@ -1,7 +1,10 @@
 import argparse
 import sys
 import os
+import colorama
+from colorama import Fore, Back, Style
 
+from PySide6.QtGui import QGuiApplication
 from PySide6 import QtWidgets
 
 import settings
@@ -20,6 +23,8 @@ def run_cli(app: QtWidgets.QApplication):
 
 
 def main():
+    colorama.just_fix_windows_console()
+
     arg_parser = argparse.ArgumentParser(
         description='transparentwebhud: place transparent browser windows on your screen')
 
@@ -34,6 +39,14 @@ def main():
         os.environ['QT_QPA_PLATFORM'] = 'xcb'
 
     app = QtWidgets.QApplication()
+
+    if QGuiApplication.platformName() == 'wayland':
+        print(f'{Style.DIM}[transparentwebhud] {Style.RESET_ALL}{Fore.YELLOW}WARNING: {Fore.RESET}You are using wayland, '
+              f'so positioning and resizing windows via the gui or config file won\'t work. Use your desktop '
+              f'environment/window manager\'s settings to automatically position and resize windows. Alternatively, '
+              f'you can start the application with the --x11 flag, but this may prevent it from starting.',
+              file=sys.stderr)
+
     config = settings.Config(args.config if args.config else 'test/config1.json')  # todo: make default config
     windows = config.windows
 
