@@ -43,6 +43,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.transparentCheckBox.checkStateChanged.connect(self.window_properties_update)
         self.ui.clickThroughCheckBox.checkStateChanged.connect(self.window_properties_update)
 
+        self.ui.enabledCheckBox.checkStateChanged.connect(self.window_toggle)
+
     def name_update(self):
         name = self.ui.nameInput.text()
         print(f'name changed to {name}') # TODO add Functionality
@@ -52,6 +54,9 @@ class MainWindow(QtWidgets.QMainWindow):
         url = self.ui.urlInput.text()
         print(f'url changed to {url}') # TODO add Functionality
         self.selected_page.set_url(url)
+
+    def window_toggle(self):
+        self.selected_page.enabled = not self.selected_page.enabled
 
     def location_update(self):
         x = self.ui.xInput.value()
@@ -114,6 +119,7 @@ class MainWindow(QtWidgets.QMainWindow):
         print("set sizes to "+str((desktop.left(), desktop.right(), desktop.top(), desktop.bottom())))
 
     def update_values(self):
+        self.blockUiSignals(True)
         self.ui.nameInput.setText(self.selected_page.title)
         self.ui.urlInput.setText(self.selected_page.url)
 
@@ -122,17 +128,41 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.transparentCheckBox.setChecked(self.selected_page.transparent)
         self.ui.clickThroughCheckBox.setChecked(self.selected_page.mouse_transparent)
 
-        self.ui.xInput.setValue(self.selected_page.location[0])
-        self.ui.yInput.setValue(self.selected_page.location[1])
+        self.ui.xInput.setValue(self.selected_page.get_location()[0])
+        self.ui.yInput.setValue(self.selected_page.get_location()[1])
         self.ui.widthInput.setValue(self.selected_page.get_size()[0])
         self.ui.heightInput.setValue(self.selected_page.get_size()[1])
 
+        self.ui.enabledCheckBox.setChecked(self.selected_page.enabled)
+        self.blockUiSignals(False)
+
+    def blockUiSignals(self, bool):
+        self.ui.nameInput.blockSignals(bool)
+        self.ui.urlInput.blockSignals(bool)
+
+        self.ui.xInput.blockSignals(bool)
+        self.ui.yInput.blockSignals(bool)
+
+        self.ui.widthInput.blockSignals(bool)
+        self.ui.heightInput.blockSignals(bool)
+
+        self.ui.cropTopInput.blockSignals(bool)
+        self.ui.cropBottomInput.blockSignals(bool)
+        self.ui.cropLeftInput.blockSignals(bool)
+        self.ui.cropRightInput.blockSignals(bool)
+
+        self.ui.opacitySlider.blockSignals(bool)
+
+        self.ui.frameCheckBox.blockSignals(bool)
+        self.ui.alwaysOnTopCheckBox.blockSignals(bool)
+        self.ui.transparentCheckBox.blockSignals(bool)
+        self.ui.clickThroughCheckBox.blockSignals(bool)
 
     def select_page(self, index):
         if self.selected_page is not None:
-            self.selected_page.remove_listeners()
+            self.selected_page.property_changed.disconnect(self.update_values)
 
         self.selected_page = self.pages[index]
         self.update_values()
-        self.selected_page.add_change_listener(self.update_values)
+        self.selected_page.property_changed.connect(self.update_values)
 
