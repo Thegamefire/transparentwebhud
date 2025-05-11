@@ -27,6 +27,19 @@ class ConfigDefaults:
     OPACITY = 1
     ENABLED = True
 
+    json_key_map = {
+        'title': TITLE,
+        'url': URL,
+        'transparent': TRANSPARENT,
+        'mouseTransparent': CLICK_THROUGH,
+        'frameless': FRAMELESS,
+        'alwaysOnTop': ALWAYS_ON_TOP,
+        'position': POSITION,
+        'size': SIZE,
+        'crop': CROP,
+        'enabled': ENABLED,
+    }
+
 
 class Config:
     def __init__(self, config_file):
@@ -58,11 +71,21 @@ class ConfigBuilder:
         })
 
     def get_config(self) -> list[_config_dict]:
-        return self.windows
+        compact_windows: list[_config_dict] = []
+        for window in self.windows:
+            window_dict: dict[str, Any] = {}
+            for key, value in window.items():
+                if not value == ConfigDefaults.json_key_map[key]:
+                    window_dict[key] = value
 
-    def dump_json(self, file) -> None:
+            compact_windows.append(window_dict)
+
+        return compact_windows
+
+
+    def dump_json(self, file, indent=4) -> None:
         with open(file, 'w+') as f:
-            json.dump(self.windows, f, indent=4)
+            json.dump(self.get_config(), f, indent=indent)
 
 
 def get_browser_window(window_dict: _config_dict) -> BrowserWindow:
