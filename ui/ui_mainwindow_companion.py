@@ -5,7 +5,7 @@ from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from browser_window import BrowserWindow
 from ui.ui_mainwindow import Ui_MainWindow
-from settings import get_default_browser_window
+from settings import get_default_browser_window, ConfigBuilder
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, pages):
@@ -222,3 +222,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def new_page(self):
         self.pages.append(get_default_browser_window())
         self.load_pagelist()
+
+        config_builder = ConfigBuilder()
+        for page in self.pages:
+            config_builder.add_window(page)
+
+        print(config_builder.get_config())
+        del config_builder

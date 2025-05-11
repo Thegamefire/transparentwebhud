@@ -6,6 +6,8 @@ import platformdirs
 
 from browser_window import BrowserWindow
 
+_config_dict = dict[str, Any]
+
 DEFAULT_CONFIG = [{
     'title': 'transparentwebhud window',
     'url': 'https://example.com',
@@ -32,12 +34,34 @@ class Config:
             self.config = json.load(f)
             self.windows: list[BrowserWindow] = []
 
-        window_dict: dict[str, Any]
+        window_dict: _config_dict
         for window_dict in self.config:
             self.windows.append(get_browser_window(window_dict))
 
 
-def get_browser_window(window_dict: dict[str, Any]) -> BrowserWindow:
+class ConfigBuilder:
+    def __init__(self):
+        self.windows: list[_config_dict] = []
+
+    def add_window(self, window: BrowserWindow) -> None:
+        self.windows.append({
+            'title': window.title,
+            'url': window.url,
+            'transparent': window.transparent,
+            'mouseTransparent': window.mouse_transparent,
+            'frameless': window.frameless,
+            'alwaysOnTop': window.always_on_top,
+            'position': list(window.get_location()),
+            'size': list(window.get_size()),
+            'crop': list(window.crop),
+            'enabled': window.enabled,
+        })
+
+    def get_config(self) -> list[_config_dict]:
+        return self.windows
+
+
+def get_browser_window(window_dict: _config_dict) -> BrowserWindow:
     window = BrowserWindow(
         window_dict.get('title', ConfigDefaults.TITLE),
         window_dict.get('url', ConfigDefaults.URL),
