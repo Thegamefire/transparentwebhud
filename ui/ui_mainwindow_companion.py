@@ -1,8 +1,8 @@
-import asyncio
 from typing import List
 
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QFont
+from PyQt6.uic.Compiler.qtproxies import QtGui
 from PySide6 import QtWidgets, QtCore
+from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from browser_window import BrowserWindow
 from ui.ui_mainwindow import Ui_MainWindow
@@ -57,7 +57,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def name_update(self):
         name = self.ui.nameInput.text()
         print(f'name changed to {name}')  # TODO add Functionality
-        self.load_pagelist()
+        #self.load_pagelist()
         self.selected_page.set_title(name)
 
     def url_update(self):
@@ -67,7 +67,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def enabled_update(self):
         self.selected_page.enabled = self.ui.enabledCheckBox.isChecked()
-        self.load_pagelist()
+        #self.load_pagelist()
         print("window toggle")
 
     def location_update(self):
@@ -133,7 +133,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def update_values(self):
         print("updating values")
-        self.blockUiSignals(True)
+        self.block_ui_signals(True)
         self.ui.nameInput.setText(self.selected_page.title)
         self.ui.urlInput.setText(self.selected_page.url)
 
@@ -148,29 +148,35 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.heightInput.setValue(self.selected_page.get_size()[1])
 
         self.ui.enabledCheckBox.setChecked(self.selected_page.enabled)
-        self.blockUiSignals(False)
 
-    def blockUiSignals(self, bool):
-        self.ui.nameInput.blockSignals(bool)
-        self.ui.urlInput.blockSignals(bool)
+        pageItem = self.pageListViewModel.item(self.selected_page_index)
+        pageItem.setText(self.selected_page.title)
+        pageItem.setCheckState(QtCore.Qt.CheckState.Checked if self.selected_page.enabled else QtCore.Qt.CheckState.Unchecked)
 
-        self.ui.xInput.blockSignals(bool)
-        self.ui.yInput.blockSignals(bool)
+        self.block_ui_signals(False)
 
-        self.ui.widthInput.blockSignals(bool)
-        self.ui.heightInput.blockSignals(bool)
+    def block_ui_signals(self, enabled):
+        self.ui.nameInput.blockSignals(enabled)
+        self.ui.urlInput.blockSignals(enabled)
 
-        self.ui.cropTopInput.blockSignals(bool)
-        self.ui.cropBottomInput.blockSignals(bool)
-        self.ui.cropLeftInput.blockSignals(bool)
-        self.ui.cropRightInput.blockSignals(bool)
+        self.ui.xInput.blockSignals(enabled)
+        self.ui.yInput.blockSignals(enabled)
 
-        self.ui.opacitySlider.blockSignals(bool)
+        self.ui.widthInput.blockSignals(enabled)
+        self.ui.heightInput.blockSignals(enabled)
 
-        self.ui.frameCheckBox.blockSignals(bool)
-        self.ui.alwaysOnTopCheckBox.blockSignals(bool)
-        self.ui.transparentCheckBox.blockSignals(bool)
-        self.ui.clickThroughCheckBox.blockSignals(bool)
+        self.ui.cropTopInput.blockSignals(enabled)
+        self.ui.cropBottomInput.blockSignals(enabled)
+        self.ui.cropLeftInput.blockSignals(enabled)
+        self.ui.cropRightInput.blockSignals(enabled)
+
+        self.ui.opacitySlider.blockSignals(enabled)
+
+        self.ui.frameCheckBox.blockSignals(enabled)
+        self.ui.alwaysOnTopCheckBox.blockSignals(enabled)
+        self.ui.transparentCheckBox.blockSignals(enabled)
+        self.ui.clickThroughCheckBox.blockSignals(enabled)
+
 
     def load_pagelist(self):
         self.pageListViewModel.clear()
@@ -181,10 +187,10 @@ class MainWindow(QtWidgets.QMainWindow):
             self.pageListViewModel.appendRow(page_list_item)
 
     def __on_page_list_item_changed(self, item:QStandardItem):
+        print("pagelistitem changed")
         page_index = self.pageListViewModel.indexFromItem(item).row()
         page = self.pages[page_index]
 
-        print("toggling direct enabled check")
         page.enabled = item.checkState() == QtCore.Qt.CheckState.Checked
         page.set_title(item.text())
 
@@ -198,6 +204,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.selected_page.property_changed.connect(self.update_values)
 
     def update_selected_page(self):
+        print(f'selected indexes: '+str(self.ui.listView.selectedIndexes()))
         if len(self.ui.listView.selectedIndexes())>0:
             page_index = self.ui.listView.selectedIndexes()[0].row()
             self.select_page(page_index)
