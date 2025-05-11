@@ -1,12 +1,11 @@
-import sys
 from typing import List
 
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from browser_window import BrowserWindow
+from settings import get_default_browser_window
 from ui.ui_mainwindow import Ui_MainWindow
-from settings import get_default_browser_window, ConfigBuilder
 
 
 class MainWindow(QtWidgets.QMainWindow):
