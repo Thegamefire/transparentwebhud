@@ -7,5 +7,10 @@
 - streamdeck plugin
 - persist size when toggling options that reload window (frame, transparent, always on top, click through)
 
+
 #### Lolcat
 - config
+
+
+### Bugs
+- when updating crop value, the new window gets focus and the corp field gets deselected

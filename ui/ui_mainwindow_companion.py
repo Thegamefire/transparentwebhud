@@ -52,6 +52,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.clickThroughCheckBox.checkStateChanged.connect(self.window_properties_update)
 
         self.ui.enabledCheckBox.checkStateChanged.connect(self.enabled_update)
+        self.ui.deleteBtn.clicked.connect(self.delete_current_page)
 
 
     def name_update(self):
@@ -197,7 +198,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def select_page(self, index):
         if self.selected_page is not None:
             self.selected_page.property_changed.disconnect(self.update_values)
-
+        print(f"pages: {self.pages}\n trying to select index: {index}")
         self.selected_page = self.pages[index]
         self.selected_page_index = index
         self.update_values()
@@ -205,6 +206,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def update_selected_page(self):
         print(f'selected indexes: '+str(self.ui.listView.selectedIndexes()))
-        if len(self.ui.listView.selectedIndexes())>0:
+        if self.pageListViewModel.rowCount()>0 and len(self.ui.listView.selectedIndexes())>0:
             page_index = self.ui.listView.selectedIndexes()[0].row()
             self.select_page(page_index)
+
+    def delete_current_page(self):
+        if (self.selected_page is not None):
+            self.selected_page.enabled = False
+            self.pages.remove(self.selected_page)
+            self.pageListViewModel.removeRow(self.selected_page_index)
+            self.selected_page = None
+            self.selected_page_index = None
+            self.update_selected_page()

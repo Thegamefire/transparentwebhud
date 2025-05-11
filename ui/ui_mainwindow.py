@@ -143,6 +143,9 @@ class Ui_MainWindow(object):
         self.listView.setObjectName(u"listView")
         self.listView.setGeometry(QRect(10, 20, 201, 531))
         self.listView.setFont(font)
+        self.newPageBtn = QPushButton(self.centralwidget)
+        self.newPageBtn.setObjectName(u"newPageBtn")
+        self.newPageBtn.setGeometry(QRect(230, 500, 101, 24))
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -169,5 +172,6 @@ class Ui_MainWindow(object):
         self.clickThroughCheckBox.setText(QCoreApplication.translate("MainWindow", u"Click Through", None))
         self.deleteBtn.setText(QCoreApplication.translate("MainWindow", u"Delete Window", None))
         self.enabledCheckBox.setText(QCoreApplication.translate("MainWindow", u"Enabled", None))
+        self.newPageBtn.setText(QCoreApplication.translate("MainWindow", u"New Window", None))
     # retranslateUi
 
