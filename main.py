@@ -24,8 +24,9 @@ def run_cli(app: QtWidgets.QApplication):
     sys.exit(app.exec())
 
 
-def sigint_handler(*args):
+def sigint_handler(*_):
     QtWidgets.QApplication.quit()
+    print(f'\n{Style.DIM}[transparentwebhud] {Style.RESET_ALL}Exited', file=sys.stderr)
 
 
 def main():
