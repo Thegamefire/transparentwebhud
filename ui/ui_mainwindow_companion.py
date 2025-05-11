@@ -1,12 +1,11 @@
 from typing import List
 
-from PyQt6.uic.Compiler.qtproxies import QtGui
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from browser_window import BrowserWindow
 from ui.ui_mainwindow import Ui_MainWindow
-
+from settings import get_default_browser_window
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, pages):
@@ -53,6 +52,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.ui.enabledCheckBox.checkStateChanged.connect(self.enabled_update)
         self.ui.deleteBtn.clicked.connect(self.delete_current_page)
+        self.ui.newPageBtn.clicked.connect(self.new_page)
 
 
     def name_update(self):
@@ -218,3 +218,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.selected_page = None
             self.selected_page_index = None
             self.update_selected_page()
+
+    def new_page(self):
+        self.pages.append(get_default_browser_window())
+        self.load_pagelist()
