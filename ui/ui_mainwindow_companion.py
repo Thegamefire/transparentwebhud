@@ -12,19 +12,19 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, pages):
         super(MainWindow, self).__init__()
 
-        self.selected_page: BrowserWindow = None
+        self.selected_page: BrowserWindow | None = None
+        self.selected_page_index: int | None = None
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
         self.set_screen_limits()
 
         self.pages: List[BrowserWindow] = pages
-        self.select_page(0)
 
         self.pageListViewModel = QStandardItemModel(self.ui.listView)
         self.ui.listView.setModel(self.pageListViewModel)
         self.pageListViewModel.itemChanged.connect(self.__on_page_list_item_changed)
-        self.load_pages()
+        self.load_pagelist()
         self.ui.listView.selectionModel().selectionChanged.connect(self.update_selected_page)
         self.ui.listView.setCurrentIndex(self.pageListViewModel.index(0,0))
 
@@ -57,6 +57,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def name_update(self):
         name = self.ui.nameInput.text()
         print(f'name changed to {name}')  # TODO add Functionality
+        self.load_pagelist()
         self.selected_page.set_title(name)
 
     def url_update(self):
@@ -66,6 +67,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def enabled_update(self):
         self.selected_page.enabled = self.ui.enabledCheckBox.isChecked()
+        self.load_pagelist()
         print("window toggle")
 
     def location_update(self):
@@ -170,7 +172,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.transparentCheckBox.blockSignals(bool)
         self.ui.clickThroughCheckBox.blockSignals(bool)
 
-    def load_pages(self):
+    def load_pagelist(self):
         self.pageListViewModel.clear()
         for page in self.pages:
             page_list_item = QStandardItem(page.title)
@@ -191,6 +193,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.selected_page.property_changed.disconnect(self.update_values)
 
         self.selected_page = self.pages[index]
+        self.selected_page_index = index
         self.update_values()
         self.selected_page.property_changed.connect(self.update_values)
 
