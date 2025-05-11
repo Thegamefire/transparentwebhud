@@ -53,8 +53,8 @@ def main():
 
     if QGuiApplication.platformName() == 'wayland':
         print(f'{Style.DIM}[transparentwebhud] {Style.RESET_ALL}{Fore.YELLOW}WARNING: {Fore.RESET}You are using wayland, '
-              f'so positioning and resizing windows via the gui or config file won\'t work. Use your desktop '
-              f'environment/window manager\'s settings to automatically position and resize windows. Alternatively, '
+              f'so positioning windows via the gui or config file won\'t work. Use your desktop '
+              f'environment/window manager\'s settings to automatically position windows. Alternatively, '
               f'you can start the application with the --x11 flag, but this may prevent it from starting.',
               file=sys.stderr)
 
