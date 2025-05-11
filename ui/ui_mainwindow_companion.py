@@ -8,6 +8,7 @@ from browser_window import BrowserWindow
 from ui.ui_mainwindow import Ui_MainWindow
 from settings import get_default_browser_window, ConfigBuilder
 
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, pages):
         super(MainWindow, self).__init__()
@@ -26,8 +27,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.pageListViewModel.itemChanged.connect(self.__on_page_list_item_changed)
         self.load_pagelist()
         self.ui.listView.selectionModel().selectionChanged.connect(self.update_selected_page)
-        self.ui.listView.setCurrentIndex(self.pageListViewModel.index(0,0))
-
+        self.ui.listView.setCurrentIndex(self.pageListViewModel.index(0, 0))
 
         # Adding Listeners
         self.ui.nameInput.textChanged.connect(self.name_update)
@@ -55,11 +55,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.deleteBtn.clicked.connect(self.delete_current_page)
         self.ui.newPageBtn.clicked.connect(self.new_page)
 
-
     def name_update(self):
         name = self.ui.nameInput.text()
         print(f'name changed to {name}')  # TODO add Functionality
-        #self.load_pagelist()
+        # self.load_pagelist()
         self.selected_page.set_title(name)
 
     def url_update(self):
@@ -69,7 +68,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def enabled_update(self):
         self.selected_page.enabled = self.ui.enabledCheckBox.isChecked()
-        #self.load_pagelist()
+        # self.load_pagelist()
         print("window toggle")
 
     def location_update(self):
@@ -153,7 +152,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         pageItem = self.pageListViewModel.item(self.selected_page_index)
         pageItem.setText(self.selected_page.title)
-        pageItem.setCheckState(QtCore.Qt.CheckState.Checked if self.selected_page.enabled else QtCore.Qt.CheckState.Unchecked)
+        pageItem.setCheckState(
+            QtCore.Qt.CheckState.Checked if self.selected_page.enabled else QtCore.Qt.CheckState.Unchecked)
 
         self.block_ui_signals(False)
 
@@ -179,16 +179,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.transparentCheckBox.blockSignals(enabled)
         self.ui.clickThroughCheckBox.blockSignals(enabled)
 
-
     def load_pagelist(self):
         self.pageListViewModel.clear()
         for page in self.pages:
             page_list_item = QStandardItem(page.title)
             page_list_item.setCheckable(True)
-            page_list_item.setCheckState(QtCore.Qt.CheckState.Checked if page.enabled else QtCore.Qt.CheckState.Unchecked)
+            page_list_item.setCheckState(
+                QtCore.Qt.CheckState.Checked if page.enabled else QtCore.Qt.CheckState.Unchecked)
             self.pageListViewModel.appendRow(page_list_item)
 
-    def __on_page_list_item_changed(self, item:QStandardItem):
+    def __on_page_list_item_changed(self, item: QStandardItem):
         print("pagelistitem changed")
         page_index = self.pageListViewModel.indexFromItem(item).row()
         page = self.pages[page_index]
@@ -206,8 +206,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.selected_page.property_changed.connect(self.update_values)
 
     def update_selected_page(self):
-        print(f'selected indexes: '+str(self.ui.listView.selectedIndexes()))
-        if self.pageListViewModel.rowCount()>0 and len(self.ui.listView.selectedIndexes())>0:
+        print(f'selected indexes: ' + str(self.ui.listView.selectedIndexes()))
+        if self.pageListViewModel.rowCount() > 0 and len(self.ui.listView.selectedIndexes()) > 0:
             page_index = self.ui.listView.selectedIndexes()[0].row()
             self.select_page(page_index)
 
@@ -223,10 +223,3 @@ class MainWindow(QtWidgets.QMainWindow):
     def new_page(self):
         self.pages.append(get_default_browser_window())
         self.load_pagelist()
-
-        config_builder = ConfigBuilder()
-        for page in self.pages:
-            config_builder.add_window(page)
-
-        config_builder.dump_json('savetest.json')
-        del config_builder
