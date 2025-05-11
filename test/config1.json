@@ -3,7 +3,8 @@
     "title":"twh FUGI Group",
     "url": "https://reactive.fugi.tech/group",
     "mouseTransparent": true,
-    "enabled": true
+    "enabled": true,
+    "size": [300, 300]
   },
   {
     "title": "twh fugi zoe talking",
