@@ -4,5 +4,7 @@
 - rewrite browser_window.py methods and their usage now that it's a subclass of the WebEngineWindow
 - Update UI Values on Drag/resize
 - streamdeck plugin
+- persist size when toggling options that reload window (frame, transparent, always on top, click through)
+
 #### Lolcat
 - config
