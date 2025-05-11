@@ -8,7 +8,7 @@ from ui.ui_mainwindow import Ui_MainWindow
 
 
 class MainWindow(QtWidgets.QMainWindow):
-    def __init__(self, pages):
+    def __init__(self, config):
         super(MainWindow, self).__init__()
 
         self.selected_page:BrowserWindow = None
@@ -17,7 +17,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.set_screen_limits()
 
-        self.pages:List[BrowserWindow] = pages
+        self.config = config
+        self.pages:List[BrowserWindow] = config.windows
         self.select_page(0)
 
 
