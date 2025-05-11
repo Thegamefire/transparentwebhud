@@ -51,7 +51,6 @@ def get_config_dir() -> str:
     """returns the config directory, and makes it if it doesn't exist"""
     path = platformdirs.user_config_dir('transparentwebhud', 'Thegamefire')
     if not os.path.isdir(path):
-        print('wiwiwi')
         os.makedirs(path)
 
     return path
