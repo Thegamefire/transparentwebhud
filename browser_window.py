@@ -33,32 +33,32 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         # Reload frame to actuate changes
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, on=not self.frameless)
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, on=self.frameless)
-        self.show()
+        self.show_hide()
         self.__on_change()
 
     def set_frame_enabled(self, enabled=True):
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, on=not enabled)
         self.frameless = not enabled
-        self.show() #TODO: fix old windows frame bug when disabling at runtime
+        self.show_hide() #TODO: fix old windows frame bug when disabling at runtime
         self.__on_change()
 
     def set_mouse_transparent(self, enabled=True):
         # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents, on=enabled)
         self.setWindowFlag(QtCore.Qt.WindowType.WindowTransparentForInput, on=enabled)
         self.mouse_transparent = enabled
-        self.show()
+        self.show_hide()
         self.__on_change()
 
     def set_always_on_top(self, enabled=True):
         self.setWindowFlag(QtCore.Qt.WindowType.WindowStaysOnTopHint, on=enabled)
         self.always_on_top = enabled
-        self.show()
+        self.show_hide()
         self.__on_change()
 
     def set_opacity(self, opacity):
         self.setWindowOpacity(opacity)
         self.opacity = opacity
-        self.show()
+        self.show_hide()
         self.__on_change()
 
     def move_tuple(self, x=None, y=None):
@@ -78,13 +78,13 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         self.crop = (top, bottom, left, right)
         if (top, bottom, left, right) == (0,0,0,0):
             self.setMask(QtGui.QRegion())
-            self.show()
+            self.show_hide()
             return
         width, height = self.get_size()
         clip = QtGui.QRegion(left, top, width-right-left, height-bottom-top)
         self.setMask(clip)
         self.set_frame_enabled(not self.frameless)
-        self.show()
+        self.show_hide()
         self.__on_change()
 
 

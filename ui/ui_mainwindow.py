@@ -12,12 +12,12 @@ from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+                           QFont, QFontDatabase, QGradient, QIcon,
+                           QImage, QKeySequence, QLinearGradient, QPainter,
+                           QPalette, QPixmap, QRadialGradient, QTransform, QStandardItemModel, QStandardItem)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QLabel, QLineEdit,
-    QListWidget, QListWidgetItem, QMainWindow, QPushButton,
-    QSizePolicy, QSlider, QSpinBox, QWidget)
+    QListView, QMainWindow, QPushButton, QSizePolicy,
+    QSlider, QSpinBox, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -28,9 +28,6 @@ class Ui_MainWindow(object):
         MainWindow.setMaximumSize(QSize(610, 570))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.listWidget = QListWidget(self.centralwidget)
-        self.listWidget.setObjectName(u"listWidget")
-        self.listWidget.setGeometry(QRect(10, 20, 211, 531))
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(230, 20, 49, 16))
@@ -142,6 +139,9 @@ class Ui_MainWindow(object):
         self.cropTopInput = QSpinBox(self.centralwidget)
         self.cropTopInput.setObjectName(u"cropTopInput")
         self.cropTopInput.setGeometry(QRect(330, 210, 81, 24))
+        self.listView = QListView(self.centralwidget)
+        self.listView.setObjectName(u"listView")
+        self.listView.setGeometry(QRect(10, 20, 201, 531))
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)

@@ -1,6 +1,7 @@
 import asyncio
 from typing import List
 
+from PySide6.QtGui import QStandardItemModel, QStandardItem
 from PySide6 import QtWidgets
 
 from browser_window import BrowserWindow
@@ -11,15 +12,14 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, pages):
         super(MainWindow, self).__init__()
 
-        self.selected_page:BrowserWindow = None
+        self.selected_page: BrowserWindow = None
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
         self.set_screen_limits()
 
-        self.pages:List[BrowserWindow] = pages
+        self.pages: List[BrowserWindow] = pages
         self.select_page(0)
-
 
         # Adding Listeners
         self.ui.nameInput.textChanged.connect(self.name_update)
@@ -45,14 +45,21 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.ui.enabledCheckBox.checkStateChanged.connect(self.window_toggle)
 
+        model = QStandardItemModel()
+        listView = self.ui.listView
+        listView.setModel(model)
+        item = QStandardItem("Page 1")
+        item.setCheckable(True)
+        model.appendRow(item)
+
     def name_update(self):
         name = self.ui.nameInput.text()
-        print(f'name changed to {name}') # TODO add Functionality
+        print(f'name changed to {name}')  # TODO add Functionality
         self.selected_page.set_title(name)
 
     def url_update(self):
         url = self.ui.urlInput.text()
-        print(f'url changed to {url}') # TODO add Functionality
+        print(f'url changed to {url}')  # TODO add Functionality
         self.selected_page.set_url(url)
 
     def window_toggle(self):
@@ -61,7 +68,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def location_update(self):
         x = self.ui.xInput.value()
         y = self.ui.yInput.value()
-        print(f'move window to {x}, {y}') # TODO add Functionality
+        print(f'move window to {x}, {y}')  # TODO add Functionality
         self.selected_page.move_tuple(x, y)
 
     def size_update(self):
@@ -69,7 +76,7 @@ class MainWindow(QtWidgets.QMainWindow):
         height = self.ui.heightInput.value()
 
         self.selected_page.set_size(width, height)
-        print(f'Change window size to {width}x{height}') # TODO add Functionality
+        print(f'Change window size to {width}x{height}')  # TODO add Functionality
 
     def crop_update(self):
         crop_top = self.ui.cropTopInput.value()
@@ -79,18 +86,18 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.selected_page.crop_page(crop_top, crop_bottom, crop_left, crop_right)
 
-
         self.ui.frameCheckBox.setDisabled(False)
-        if (crop_top, crop_bottom, crop_left, crop_right) != (0,0,0,0):
+        if (crop_top, crop_bottom, crop_left, crop_right) != (0, 0, 0, 0):
             self.ui.frameCheckBox.setChecked(False)
             self.ui.frameCheckBox.setDisabled(True)
 
-        print(f'crop top: {crop_top} bottom: {crop_bottom} left: {crop_left} right: {crop_right}') # TODO add Functionality
+        print(
+            f'crop top: {crop_top} bottom: {crop_bottom} left: {crop_left} right: {crop_right}')  # TODO add Functionality
 
     def opacity_update(self):
-        opacity = self.ui.opacitySlider.value() /100
+        opacity = self.ui.opacitySlider.value() / 100
 
-        print(f'change opacity to {opacity}')# TODO add Functionality
+        print(f'change opacity to {opacity}')  # TODO add Functionality
         self.selected_page.set_opacity(opacity)
 
     def window_properties_update(self):
@@ -103,7 +110,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.selected_page.set_always_on_top(always_on_top)
         self.selected_page.set_transparent(transparent)
         self.selected_page.set_mouse_transparent(click_through)
-        print(f'changed window properties: frame_enabled={frame_enabled} alwaysOnTop={always_on_top} transparent={transparent} clickThrough={click_through}')# TODO add Functionality
+        print(
+            f'changed window properties: frame_enabled={frame_enabled} alwaysOnTop={always_on_top} transparent={transparent} clickThrough={click_through}')  # TODO add Functionality
         print(f'on page {self.selected_page}')
 
     def set_screen_limits(self):
@@ -116,7 +124,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.widthInput.setMaximum(desktop.width())
         self.ui.heightInput.setMaximum(desktop.height())
 
-        print("set sizes to "+str((desktop.left(), desktop.right(), desktop.top(), desktop.bottom())))
+        print("set sizes to " + str((desktop.left(), desktop.right(), desktop.top(), desktop.bottom())))
 
     def update_values(self):
         self.blockUiSignals(True)
@@ -165,4 +173,3 @@ class MainWindow(QtWidgets.QMainWindow):
         self.selected_page = self.pages[index]
         self.update_values()
         self.selected_page.property_changed.connect(self.update_values)
-
