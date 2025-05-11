@@ -60,6 +60,10 @@ class ConfigBuilder:
     def get_config(self) -> list[_config_dict]:
         return self.windows
 
+    def dump_json(self, file) -> None:
+        with open(file, 'w+') as f:
+            json.dump(self.windows, f, indent=4)
+
 
 def get_browser_window(window_dict: _config_dict) -> BrowserWindow:
     window = BrowserWindow(

@@ -1,3 +1,4 @@
+import sys
 from typing import List
 
 from PySide6 import QtWidgets, QtCore
@@ -227,5 +228,5 @@ class MainWindow(QtWidgets.QMainWindow):
         for page in self.pages:
             config_builder.add_window(page)
 
-        print(config_builder.get_config())
+        config_builder.dump_json('savetest.json')
         del config_builder
