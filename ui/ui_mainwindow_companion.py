@@ -1,8 +1,8 @@
 import asyncio
 from typing import List
 
-from PySide6.QtGui import QStandardItemModel, QStandardItem
-from PySide6 import QtWidgets
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QFont
+from PySide6 import QtWidgets, QtCore
 
 from browser_window import BrowserWindow
 from ui.ui_mainwindow import Ui_MainWindow
@@ -20,6 +20,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.pages: List[BrowserWindow] = pages
         self.select_page(0)
+
+        self.pageListViewModel = QStandardItemModel(self.ui.listView)
+        self.ui.listView.setModel(self.pageListViewModel)
+        self.pageListViewModel.itemChanged.connect(self.__on_page_list_item_changed)
+        self.load_pages()
+
 
         # Adding Listeners
         self.ui.nameInput.textChanged.connect(self.name_update)
@@ -45,12 +51,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.ui.enabledCheckBox.checkStateChanged.connect(self.window_toggle)
 
-        model = QStandardItemModel()
-        listView = self.ui.listView
-        listView.setModel(model)
-        item = QStandardItem("Page 1")
-        item.setCheckable(True)
-        model.appendRow(item)
 
     def name_update(self):
         name = self.ui.nameInput.text()
@@ -165,6 +165,24 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.alwaysOnTopCheckBox.blockSignals(bool)
         self.ui.transparentCheckBox.blockSignals(bool)
         self.ui.clickThroughCheckBox.blockSignals(bool)
+
+    def load_pages(self):
+        self.pageListViewModel.clear()
+        for page in self.pages:
+            page_list_item = QStandardItem(page.title)
+            page_list_item.setCheckable(True)
+            page_list_item.setCheckState(QtCore.Qt.CheckState.Checked if page.enabled else QtCore.Qt.CheckState.Unchecked)
+            self.pageListViewModel.appendRow(page_list_item)
+
+    def __on_page_list_item_changed(self, item:QStandardItem):
+        page_index = self.pageListViewModel.indexFromItem(item).row()
+        page = self.pages[page_index]
+        if page == self.selected_page:
+            self.ui.enabledCheckBox.setCheckState(item.checkState())
+            self.ui.nameInput.setText(item.text())
+        else:
+            page.enabled = item.checkState() == QtCore.Qt.CheckState.Checked
+            page.set_title(item.text())
 
     def select_page(self, index):
         if self.selected_page is not None:
