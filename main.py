@@ -14,6 +14,7 @@ import ui
 from browser_window import BrowserWindow
 
 windows: list[BrowserWindow]
+config_file: str
 
 
 def run_gui(app: QtWidgets.QApplication, pages):
@@ -26,10 +27,22 @@ def run_cli(app: QtWidgets.QApplication):
 
 def sigint_handler(*_):
     QtWidgets.QApplication.quit()
+    save_all_windows()  # TODO: move this somewhere else
     print(f'\n{Style.DIM}[transparentwebhud] {Style.RESET_ALL}Exited', file=sys.stderr)
 
 
+def save_all_windows() -> None:
+    config_builder = settings.ConfigBuilder()
+    for window in windows:
+        config_builder.add_window(window)
+
+    config_builder.dump_json(config_file)
+
+
 def main():
+    global windows
+    global config_file
+
     colorama.just_fix_windows_console()
 
     arg_parser = argparse.ArgumentParser(
@@ -53,15 +66,16 @@ def main():
     sigint_timer.timeout.connect(lambda: None)
 
     if QGuiApplication.platformName() == 'wayland':
-        print(f'{Style.DIM}[transparentwebhud] {Style.RESET_ALL}{Fore.YELLOW}WARNING: {Fore.RESET}You are using wayland, '
-              f'so positioning windows via the gui or config file won\'t work. Use your desktop '
-              f'environment/window manager\'s settings to automatically position windows. Alternatively, '
-              f'you can start the application with the --x11 flag, but this may prevent it from starting.',
-              file=sys.stderr)
+        print(
+            f'{Style.DIM}[transparentwebhud] {Style.RESET_ALL}{Fore.YELLOW}WARNING: {Fore.RESET}You are using wayland, '
+            f'so positioning windows via the gui or config file won\'t work. Use your desktop '
+            f'environment/window manager\'s settings to automatically position windows. Alternatively, '
+            f'you can start the application with the --x11 flag, but this may prevent it from starting.',
+            file=sys.stderr)
 
-    config = settings.Config(args.config if args.config else settings.get_default_config())
+    config_file = args.config if args.config else settings.get_default_config()
+    config = settings.Config(config_file)
     windows = config.windows
-
 
     if args.config is None:
         run_gui(app, pages=windows)
