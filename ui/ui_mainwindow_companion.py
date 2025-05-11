@@ -25,6 +25,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.listView.setModel(self.pageListViewModel)
         self.pageListViewModel.itemChanged.connect(self.__on_page_list_item_changed)
         self.load_pages()
+        self.ui.listView.selectionModel().selectionChanged.connect(self.update_selected_page)
+        self.ui.listView.setCurrentIndex(self.pageListViewModel.index(0,0))
 
 
         # Adding Listeners
@@ -49,7 +51,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.transparentCheckBox.checkStateChanged.connect(self.window_properties_update)
         self.ui.clickThroughCheckBox.checkStateChanged.connect(self.window_properties_update)
 
-        self.ui.enabledCheckBox.checkStateChanged.connect(self.window_toggle)
+        self.ui.enabledCheckBox.checkStateChanged.connect(self.enabled_update)
 
 
     def name_update(self):
@@ -62,8 +64,9 @@ class MainWindow(QtWidgets.QMainWindow):
         print(f'url changed to {url}')  # TODO add Functionality
         self.selected_page.set_url(url)
 
-    def window_toggle(self):
-        self.selected_page.enabled = not self.selected_page.enabled
+    def enabled_update(self):
+        self.selected_page.enabled = self.ui.enabledCheckBox.isChecked()
+        print("window toggle")
 
     def location_update(self):
         x = self.ui.xInput.value()
@@ -127,6 +130,7 @@ class MainWindow(QtWidgets.QMainWindow):
         print("set sizes to " + str((desktop.left(), desktop.right(), desktop.top(), desktop.bottom())))
 
     def update_values(self):
+        print("updating values")
         self.blockUiSignals(True)
         self.ui.nameInput.setText(self.selected_page.title)
         self.ui.urlInput.setText(self.selected_page.url)
@@ -177,12 +181,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def __on_page_list_item_changed(self, item:QStandardItem):
         page_index = self.pageListViewModel.indexFromItem(item).row()
         page = self.pages[page_index]
-        if page == self.selected_page:
-            self.ui.enabledCheckBox.setCheckState(item.checkState())
-            self.ui.nameInput.setText(item.text())
-        else:
-            page.enabled = item.checkState() == QtCore.Qt.CheckState.Checked
-            page.set_title(item.text())
+
+        print("toggling direct enabled check")
+        page.enabled = item.checkState() == QtCore.Qt.CheckState.Checked
+        page.set_title(item.text())
 
     def select_page(self, index):
         if self.selected_page is not None:
@@ -191,3 +193,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.selected_page = self.pages[index]
         self.update_values()
         self.selected_page.property_changed.connect(self.update_values)
+
+    def update_selected_page(self):
+        if len(self.ui.listView.selectedIndexes())>0:
+            page_index = self.ui.listView.selectedIndexes()[0].row()
+            self.select_page(page_index)
