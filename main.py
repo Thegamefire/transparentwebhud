@@ -60,10 +60,11 @@ def main():
               file=sys.stderr)
 
     config = settings.Config(args.config if args.config else settings.get_default_config())
+    windows = config.windows
 
 
     if args.config is None:
-        run_gui(app, config=config)
+        run_gui(app, pages=windows)
     else:
         run_cli(app)
 
