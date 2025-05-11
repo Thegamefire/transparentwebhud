@@ -38,6 +38,11 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
 
     def set_frame_enabled(self, enabled=True):
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, on=not enabled)
+
+        #Reload Mouse Transparency so it doesn't show old windows titlebar
+        self.set_mouse_transparent(not self.mouse_transparent)
+        self.set_mouse_transparent(not self.mouse_transparent)
+
         self.frameless = not enabled
         self.show_hide() #TODO: fix old windows frame bug when disabling at runtime
         self.__on_change()
