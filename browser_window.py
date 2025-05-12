@@ -150,8 +150,3 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
             self.show()
         else:
             self.hide()
-
-    def toggle(self):
-        self.enabled = not self.enabled
-        print("toggled to "+str(self.enabled))
-        self.show_hide()

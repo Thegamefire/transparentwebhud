@@ -38,9 +38,11 @@ class TrayIcon(QSystemTrayIcon):
             self.page_menu.actions()[-1].setChecked(page.enabled)
             action = self.page_menu.actions()[-1]
             page.property_changed.connect(lambda: action.setChecked(page.enabled))
-            self.page_menu.actions()[-1].triggered.connect(lambda: page.enabled.set(action.isChecked()))
+            self.page_menu.actions()[-1].triggered.connect(lambda: self.set_page_enabled(page, action.isChecked()))
 
-
+    def set_page_enabled(self, page, enabled):
+        print("Setting page mode to: "+str(enabled))
+        page.enabled = enabled
 
 if __name__=='__main__':
     class UiEmulator:
