@@ -38,7 +38,7 @@ class TrayIcon(QSystemTrayIcon):
             self.page_menu.actions()[-1].setChecked(page.enabled)
             action = self.page_menu.actions()[-1]
             page.property_changed.connect(lambda: action.setChecked(page.enabled))
-            self.page_menu.actions()[-1].triggered.connect(page.toggle)
+            self.page_menu.actions()[-1].triggered.connect(lambda: page.enabled.set(action.isChecked()))
 
 
 

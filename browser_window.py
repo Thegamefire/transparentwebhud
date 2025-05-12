@@ -108,8 +108,8 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         self.__on_change()
         return event
 
-    def hideEvent(self, event, /):
-        super().hideEvent(event)
+    def closeEvent(self, event, /):
+        super().closeEvent(event)
         print("hidden")
         self.__enabled = False
         self.__on_change()
