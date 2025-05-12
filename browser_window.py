@@ -1,4 +1,3 @@
-from PyQt6.QtGui import QRegion
 from PySide6 import QtCore, QtWidgets, QtWebEngineWidgets, QtGui
 from PySide6.QtCore import Signal
 
