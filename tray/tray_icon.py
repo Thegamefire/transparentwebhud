@@ -7,7 +7,7 @@ from browser_window import BrowserWindow
 
 
 class TrayIcon(QSystemTrayIcon):
-    def __init__(self, app, config_ui, config_path, pages):
+    def __init__(self, q_app, config_ui, config_path, pages):
         super().__init__()
         self.pages:List[BrowserWindow] = pages
         self.setIcon(QIcon("icon.png"))
@@ -26,7 +26,7 @@ class TrayIcon(QSystemTrayIcon):
         self.contextMenu().addMenu(self.page_menu)
 
         self.contextMenu().addAction("Exit")
-        self.contextMenu().actions()[-1].triggered.connect(app.exit)
+        self.contextMenu().actions()[-1].triggered.connect(q_app.exit)
 
         self.setVisible(True)
 
