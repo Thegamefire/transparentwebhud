@@ -5,10 +5,11 @@ from typing import Any
 import platformdirs
 
 from browser_window import BrowserWindow
+from observable_list import ObservableList
 
 DEFAULT_CONFIG = [{
     'title': 'transparentwebhud window',
-    'url': 'https://example.com',
+    'url': 'https://example.com'
 }]
 
 
@@ -30,7 +31,7 @@ class Config:
     def __init__(self, config_file):
         with open(config_file) as f:
             self.config = json.load(f)
-            self.windows: list[BrowserWindow] = []
+            self.windows: ObservableList = ObservableList()
 
         window_dict: dict[str, Any]
         for window_dict in self.config:

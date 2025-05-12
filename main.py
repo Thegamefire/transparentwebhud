@@ -12,8 +12,9 @@ from colorama import Fore, Style
 import settings
 import ui
 from browser_window import BrowserWindow
+from observable_list import ObservableList
 
-windows: list[BrowserWindow]
+windows: ObservableList
 
 
 def run_gui(app: QtWidgets.QApplication, pages):

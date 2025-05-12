@@ -4,12 +4,14 @@ from typing import List
 from PySide6.QtWidgets import QSystemTrayIcon, QApplication, QMenu
 from PySide6.QtGui import QIcon, QAction
 from browser_window import BrowserWindow
+from observable_list import ObservableList
 
 
 class TrayIcon(QSystemTrayIcon):
     def __init__(self, q_app, config_ui, config_path, pages):
         super().__init__()
-        self.pages:List[BrowserWindow] = pages
+        self.pages:ObservableList = pages
+        self.pages.list_changed.connect(self.load_pages)
         self.setIcon(QIcon("icon.png"))
         self.activated.connect(lambda: print("clicked"))
 
@@ -53,5 +55,5 @@ if __name__=='__main__':
     ui_emulator = UiEmulator()
     app = QApplication([])
     app.setQuitOnLastWindowClosed(False)
-    tray = TrayIcon(app, ui_emulator, "icon.png", pages=[BrowserWindow("Test", "https://example.com")])
+    tray = TrayIcon(app, ui_emulator, "icon.png", pages=ObservableList([BrowserWindow("Test", "https://example.com")]))
     sys.exit(app.exec())
