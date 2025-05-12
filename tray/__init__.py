@@ -10,17 +10,21 @@ class TrayManager():
         self.app = app
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(QIcon("icon.png"))
-        self.tray.setContextMenu(self.create_menu())
+        self.tray.setContextMenu(QMenu())
         self.tray.setVisible(True)
+        self.add_actions()
+        self.tray.activated.connect(self.__on_click)
+        self.tray.contextMenu().addAction("Test World")
 
-    def create_menu(self) -> QMenu:
-        menu = QMenu()
-        option1 = QAction("Hello World!")
-        quit = QAction("Exit")
-        quit.triggered.connect(self.app.quit)
-        menu.addAction(option1)
-        menu.addAction(quit)
-        return menu
+    def add_actions(self) -> None:
+        exit_action = QAction("Exit")
+        exit_action.triggered.connect(self.app.exit)
+        self.tray.contextMenu().addAction(exit_action)
+
+    def __on_click(self):
+        print(self.tray.contextMenu().actions())
+        if not self.tray.contextMenu().actions():
+            self.add_actions()
 
 class TrayIcon(QSystemTrayIcon):
     def __init__(self, app:QApplication):
@@ -28,6 +32,8 @@ class TrayIcon(QSystemTrayIcon):
         self.app = app
         self.setIcon(QIcon("icon.png"))
         self.setContextMenu(self.create_menu())
+        self.contextMenu().addAction("Yow")
+        self.setVisible(True)
 
     def create_menu(self) -> QMenu:
         menu = QMenu()
@@ -46,7 +52,7 @@ if __name__=='__main__':
     def test1():
         app = QtWidgets.QApplication([])
         app.setQuitOnLastWindowClosed(False)
-        icon = TrayManager(app)
+        icon = TrayIcon(app)
 
         sys.exit(app.exec())
     def test2():
