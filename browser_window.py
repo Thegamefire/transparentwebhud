@@ -19,6 +19,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         self.transparent = False
         self.mouse_transparent = False
         self.opacity = 1
+        self.size_tuple = (0, 0)
         self.crop = (0,0,0,0)
 
     def __str__(self):
@@ -79,6 +80,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         size = self.size()
         size.setWidth(width)
         size.setHeight(height)
+        self.size_tuple = (width, height)
         self.resize(size)
         self.crop_page(*self.crop)
 
@@ -90,7 +92,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
             self.setMask(QtGui.QRegion())
             self.show_hide()
             return
-        width, height = self.get_size()
+        width, height = self.size_tuple
         clip = QtGui.QRegion(left, top, width-right-left, height-bottom-top)
         self.setMask(clip)
         self.set_frame_enabled(not self.frameless)
@@ -100,6 +102,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
 
     def resizeEvent(self, event, /):
         super().resizeEvent(event)
+        self.size_tuple = self.size().toTuple()
         self.__on_change()
         return event
 
@@ -118,10 +121,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
     def __on_change(self):
         self.property_changed.emit()
 
-    def get_size(self) -> tuple:
-        return self.size().toTuple()
-
-    def get_location(self) -> tuple:
+    def get_location(self):
         return self.pos().toTuple()
 
     def set_title(self, title):
@@ -140,6 +140,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
 
     @enabled.setter
     def enabled(self, value):
+        print("set value to :"+str(value))
         self.__enabled = value
         self.show_hide()
         self.__on_change()
@@ -147,6 +148,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
     def show_hide(self):
         """shows window if enabled is true, else hide"""
         if self.enabled:
+            self.resize(self.size_tuple[0],self.size_tuple[1])
             self.show()
         else:
             self.hide()

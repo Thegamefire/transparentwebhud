@@ -44,6 +44,7 @@ class TrayIcon(QSystemTrayIcon):
         print("Setting page mode to: "+str(enabled))
         page.enabled = enabled
 
+
 if __name__=='__main__':
     class UiEmulator:
         def show(self):

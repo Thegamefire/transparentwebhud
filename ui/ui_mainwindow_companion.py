@@ -145,8 +145,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.ui.xInput.setValue(self.selected_page.get_location()[0])
         self.ui.yInput.setValue(self.selected_page.get_location()[1])
-        self.ui.widthInput.setValue(self.selected_page.get_size()[0])
-        self.ui.heightInput.setValue(self.selected_page.get_size()[1])
+        self.ui.widthInput.setValue(self.selected_page.size_tuple[0])
+        self.ui.heightInput.setValue(self.selected_page.size_tuple[1])
 
         self.ui.enabledCheckBox.setChecked(self.selected_page.enabled)
 
