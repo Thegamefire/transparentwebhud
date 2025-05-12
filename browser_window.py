@@ -25,6 +25,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         return f'(BrowserPage name="{self.title}" url="{self.url}")'
 
     def set_transparent(self, enabled=True):
+        window_enabled = self.enabled
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground, on=enabled)
         self.page().setBackgroundColor(QtGui.QColorConstants.Transparent)
         self.transparent = enabled
@@ -32,37 +33,41 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         # Reload frame to actuate changes
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, on=not self.frameless)
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, on=self.frameless)
-        self.show_hide()
+        self.enabled = window_enabled
         self.__on_change()
 
     def set_frame_enabled(self, enabled=True):
+        window_enabled = self.enabled
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, on=not enabled)
 
         #Reload Mouse Transparency so it doesn't show old windows titlebar
-        self.set_mouse_transparent(not self.mouse_transparent)
-        self.set_mouse_transparent(not self.mouse_transparent)
+        self.setWindowFlag(QtCore.Qt.WindowType.WindowTransparentForInput, on=not self.mouse_transparent)
+        self.setWindowFlag(QtCore.Qt.WindowType.WindowTransparentForInput, on=self.mouse_transparent)
 
         self.frameless = not enabled
-        self.show_hide() #TODO: fix old windows frame bug when disabling at runtime
+        self.enabled = window_enabled #TODO: fix old windows frame bug when disabling at runtime
         self.__on_change()
 
     def set_mouse_transparent(self, enabled=True):
+        window_enabled = self.enabled
         # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents, on=enabled)
         self.setWindowFlag(QtCore.Qt.WindowType.WindowTransparentForInput, on=enabled)
         self.mouse_transparent = enabled
-        self.show_hide()
+        self.enabled = window_enabled
         self.__on_change()
 
     def set_always_on_top(self, enabled=True):
+        window_enabled = self.enabled
         self.setWindowFlag(QtCore.Qt.WindowType.WindowStaysOnTopHint, on=enabled)
         self.always_on_top = enabled
-        self.show_hide()
+        self.enabled = window_enabled
         self.__on_change()
 
     def set_opacity(self, opacity):
+        window_enabled = self.enabled
         self.setWindowOpacity(opacity)
         self.opacity = opacity
-        self.show_hide()
+        self.enabled = window_enabled
         self.__on_change()
 
     def move_tuple(self, x=None, y=None):
@@ -79,6 +84,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
 
 
     def crop_page(self, top=0, bottom=0, left=0, right=0):
+        window_enabled = self.enabled
         self.crop = (top, bottom, left, right)
         if (top, bottom, left, right) == (0,0,0,0):
             self.setMask(QtGui.QRegion())
@@ -88,7 +94,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         clip = QtGui.QRegion(left, top, width-right-left, height-bottom-top)
         self.setMask(clip)
         self.set_frame_enabled(not self.frameless)
-        self.show_hide()
+        self.enabled = window_enabled
         self.__on_change()
 
 
@@ -99,6 +105,13 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
 
     def moveEvent(self, event, /):
         super().moveEvent(event)
+        self.__on_change()
+        return event
+
+    def hideEvent(self, event, /):
+        super().hideEvent(event)
+        print("hidden")
+        self.__enabled = False
         self.__on_change()
         return event
 
@@ -138,5 +151,3 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         else:
             self.hide()
 
-    def toggle(self):
-        self.enabled = not self.enabled

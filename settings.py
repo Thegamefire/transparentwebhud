@@ -6,6 +6,11 @@ import platformdirs
 
 from browser_window import BrowserWindow
 
+DEFAULT_CONFIG = [{
+    'title': 'transparentwebhud window',
+    'url': 'https://example.com',
+}]
+
 
 class ConfigDefaults:
     TITLE = 'transparentwebhud window'
@@ -15,8 +20,7 @@ class ConfigDefaults:
     CLICK_THROUGH = False
     ALWAYS_ON_TOP = True
     POSITION = [0, 0]
-    WIDTH = 0
-    HEIGHT = 0
+    SIZE = [640, 480]
     CROP = [0, 0, 0, 0]
     OPACITY = 1
     ENABLED = True
@@ -30,20 +34,30 @@ class Config:
 
         window_dict: dict[str, Any]
         for window_dict in self.config:
-            window = BrowserWindow(
-                window_dict.get('title', ConfigDefaults.TITLE),
-                window_dict.get('url', ConfigDefaults.URL),
-            )
+            self.windows.append(get_browser_window(window_dict))
 
-            window.set_transparent(window_dict.get('transparent', ConfigDefaults.TRANSPARENT))
-            window.set_frame_enabled(not window_dict.get('frameless', ConfigDefaults.FRAMELESS))
-            window.set_mouse_transparent(window_dict.get('mouseTransparent', ConfigDefaults.CLICK_THROUGH))
-            window.set_always_on_top(window_dict.get('alwaysOnTop', ConfigDefaults.ALWAYS_ON_TOP))
-            pos = window_dict.get('position', ConfigDefaults.POSITION)
-            window.move_tuple(pos[0], pos[1])
-            window.enabled = window_dict.get('enabled', ConfigDefaults.ENABLED)
 
-            self.windows.append(window)
+def get_browser_window(window_dict: dict[str, Any]) -> BrowserWindow:
+    window = BrowserWindow(
+        window_dict.get('title', ConfigDefaults.TITLE),
+        window_dict.get('url', ConfigDefaults.URL),
+    )
+
+    window.set_transparent(window_dict.get('transparent', ConfigDefaults.TRANSPARENT))
+    window.set_frame_enabled(not window_dict.get('frameless', ConfigDefaults.FRAMELESS))
+    window.set_mouse_transparent(window_dict.get('mouseTransparent', ConfigDefaults.CLICK_THROUGH))
+    window.set_always_on_top(window_dict.get('alwaysOnTop', ConfigDefaults.ALWAYS_ON_TOP))
+    pos = window_dict.get('position', ConfigDefaults.POSITION)
+    window.move_tuple(pos[0], pos[1])
+    size = window_dict.get('size', ConfigDefaults.SIZE)
+    window.set_size(size[0], size[1])
+    window.enabled = window_dict.get('enabled', ConfigDefaults.ENABLED)
+
+    return window
+
+
+def get_default_browser_window() -> BrowserWindow:
+    return get_browser_window(DEFAULT_CONFIG[0])
 
 
 def get_config_dir() -> str:
@@ -55,13 +69,9 @@ def get_config_dir() -> str:
     return path
 
 
-
 def _generate_default_config(path: str) -> None:
     with open(path, 'x') as f:
-        json.dump([{
-            'title': 'transparentwebhud window',
-            'url': 'https://example.com',
-        }], f)
+        json.dump(DEFAULT_CONFIG, f)
 
 
 def get_default_config() -> str:
@@ -71,5 +81,3 @@ def get_default_config() -> str:
         _generate_default_config(path)
 
     return path
-
-

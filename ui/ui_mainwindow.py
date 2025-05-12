@@ -16,23 +16,18 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QLabel, QLineEdit,
-    QListWidget, QListWidgetItem, QMainWindow, QPushButton,
-    QSizePolicy, QSlider, QSpinBox, QStatusBar,
-    QWidget)
+    QListView, QMainWindow, QPushButton, QSizePolicy,
+    QSlider, QSpinBox, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(610, 570)
-        MainWindow.setFixedSize(610, 570)
         MainWindow.setMinimumSize(QSize(610, 570))
         MainWindow.setMaximumSize(QSize(610, 570))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.listWidget = QListWidget(self.centralwidget)
-        self.listWidget.setObjectName(u"listWidget")
-        self.listWidget.setGeometry(QRect(10, -20, 211, 561))
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(230, 20, 49, 16))
@@ -133,13 +128,10 @@ class Ui_MainWindow(object):
         self.clickThroughCheckBox.setFont(font)
         self.deleteBtn = QPushButton(self.centralwidget)
         self.deleteBtn.setObjectName(u"deleteBtn")
-        self.deleteBtn.setGeometry(QRect(230, 520, 101, 24))
-        self.pushButton_2 = QPushButton(self.centralwidget)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setGeometry(QRect(530, 520, 75, 24))
+        self.deleteBtn.setGeometry(QRect(230, 530, 101, 24))
         self.enabledCheckBox = QCheckBox(self.centralwidget)
         self.enabledCheckBox.setObjectName(u"enabledCheckBox")
-        self.enabledCheckBox.setGeometry(QRect(390, 520, 91, 20))
+        self.enabledCheckBox.setGeometry(QRect(500, 530, 91, 20))
         self.enabledCheckBox.setFont(font)
         self.cropLeftInput = QSpinBox(self.centralwidget)
         self.cropLeftInput.setObjectName(u"cropLeftInput")
@@ -147,10 +139,14 @@ class Ui_MainWindow(object):
         self.cropTopInput = QSpinBox(self.centralwidget)
         self.cropTopInput.setObjectName(u"cropTopInput")
         self.cropTopInput.setGeometry(QRect(330, 210, 81, 24))
+        self.listView = QListView(self.centralwidget)
+        self.listView.setObjectName(u"listView")
+        self.listView.setGeometry(QRect(10, 20, 201, 531))
+        self.listView.setFont(font)
+        self.newPageBtn = QPushButton(self.centralwidget)
+        self.newPageBtn.setObjectName(u"newPageBtn")
+        self.newPageBtn.setGeometry(QRect(230, 500, 101, 24))
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QStatusBar(MainWindow)
-        self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
 
@@ -175,7 +171,7 @@ class Ui_MainWindow(object):
         self.alwaysOnTopCheckBox.setText(QCoreApplication.translate("MainWindow", u"Always On Top", None))
         self.clickThroughCheckBox.setText(QCoreApplication.translate("MainWindow", u"Click Through", None))
         self.deleteBtn.setText(QCoreApplication.translate("MainWindow", u"Delete Window", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.enabledCheckBox.setText(QCoreApplication.translate("MainWindow", u"Enabled", None))
+        self.newPageBtn.setText(QCoreApplication.translate("MainWindow", u"New Window", None))
     # retranslateUi
 
