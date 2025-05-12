@@ -13,7 +13,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         self.set_title(title)
         self.url = url
         self.set_url(url)
-        self.__enabled = True
+        self.__enabled = False
         self.frameless = False
         self.always_on_top = False
         self.transparent = False
@@ -151,3 +151,7 @@ class BrowserWindow(QtWebEngineWidgets.QWebEngineView):
         else:
             self.hide()
 
+    def toggle(self):
+        self.enabled = not self.enabled
+        print("toggled to "+str(self.enabled))
+        self.show_hide()
